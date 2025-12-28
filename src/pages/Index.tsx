@@ -5,9 +5,9 @@ import AboutSection from '@/components/AboutSection';
 import SkillsSection from '@/components/SkillsSection';
 import ProjectsSection from '@/components/ProjectsSection';
 import ExperienceSection from '@/components/ExperienceSection';
-import ChatbotSection from '@/components/ChatbotSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
+import FloatingChatbot from '@/components/FloatingChatbot';
 
 const Index = () => {
   return (
@@ -33,10 +33,10 @@ const Index = () => {
           <SkillsSection />
           <ProjectsSection />
           <ExperienceSection />
-          <ChatbotSection />
           <ContactSection />
         </main>
         <Footer />
+        <FloatingChatbot />
       </div>
     </>
   );

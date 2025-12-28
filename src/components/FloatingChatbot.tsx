@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Send, Bot, User, Sparkles, Loader2 } from 'lucide-react';
+import { Send, Bot, User, Sparkles, Loader2, X, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface Message {
@@ -9,10 +9,9 @@ interface Message {
 }
 
 const sampleQuestions = [
-  "What are your main skills?",
+  "What are your skills?",
   "Tell me about your experience",
   "What projects have you worked on?",
-  "What's your tech stack?",
   "How can I contact you?",
 ];
 
@@ -95,12 +94,13 @@ const generateResponse = (query: string): string => {
   return `I'd be happy to tell you more about ${knowledgeBase.name}. You can ask me about:\n\n• Technical skills and technologies\n• Projects and work experience\n• Educational background\n• How to get in contact\n• AI/ML expertise\n\nWhat would you like to know?`;
 };
 
-const ChatbotSection = () => {
+const FloatingChatbot = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
       role: 'assistant',
-      content: `👋 Hi there! I'm an AI assistant trained to answer questions about **TAMILSELVAN P**. I can tell you about his skills, projects, experience, and more. What would you like to know?`,
+      content: `👋 Hi! I'm an AI assistant. Ask me anything about **TAMILSELVAN P**!`,
     },
   ]);
   const [input, setInput] = useState('');
@@ -129,8 +129,7 @@ const ChatbotSection = () => {
     setInput('');
     setIsTyping(true);
 
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 800));
 
     const response = generateResponse(userMessage.content);
     
@@ -149,122 +148,127 @@ const ChatbotSection = () => {
   };
 
   return (
-    <section id="chatbot" className="py-24 relative">
-      <div className="section-container">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <span className="text-primary text-sm font-semibold uppercase tracking-widest">AI Assistant</span>
-          <h2 className="font-heading text-4xl sm:text-5xl font-bold mt-4 mb-6">
-            Ask{' '}
-            <span className="gradient-text">About Me</span>
-          </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Powered by RAG technology, this AI assistant can answer questions about my skills, 
-            projects, and experience. Try asking something!
-          </p>
-          <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full mt-6" />
-        </div>
+    <>
+      {/* Floating Button */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-r from-primary to-[hsl(190_80%_45%)] text-primary-foreground shadow-lg hover:shadow-[0_0_30px_hsla(174,72%,56%,0.5)] transition-all duration-300 flex items-center justify-center ${
+          isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100'
+        }`}
+      >
+        <MessageCircle className="w-6 h-6" />
+        <span className="absolute -top-1 -right-1 w-4 h-4 bg-accent rounded-full flex items-center justify-center">
+          <Sparkles className="w-2.5 h-2.5" />
+        </span>
+      </button>
 
-        <div className="max-w-3xl mx-auto">
-          {/* Chat Container */}
-          <div className="glass-card overflow-hidden">
-            {/* Chat Header */}
-            <div className="bg-secondary/50 px-6 py-4 border-b border-border flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-primary-foreground" />
+      {/* Chat Window */}
+      <div
+        className={`fixed bottom-6 right-6 z-50 w-[380px] max-w-[calc(100vw-3rem)] transition-all duration-300 ${
+          isOpen
+            ? 'opacity-100 translate-y-0 scale-100'
+            : 'opacity-0 translate-y-4 scale-95 pointer-events-none'
+        }`}
+      >
+        <div className="glass-card overflow-hidden shadow-2xl border border-border">
+          {/* Chat Header */}
+          <div className="bg-gradient-to-r from-primary/20 to-accent/20 px-4 py-3 border-b border-border flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+                <Sparkles className="w-4 h-4 text-primary-foreground" />
               </div>
               <div>
-                <h3 className="font-semibold text-foreground">Personal AI Assistant</h3>
-                <p className="text-xs text-muted-foreground">Ask me anything about TAMILSELVAN</p>
+                <h3 className="font-semibold text-sm text-foreground">Ask About Me</h3>
+                <p className="text-xs text-muted-foreground">AI-powered assistant</p>
               </div>
             </div>
-
-            {/* Messages */}
-            <div className="h-96 overflow-y-auto p-6 space-y-4">
-              {messages.map((message) => (
-                <div
-                  key={message.id}
-                  className={`flex gap-3 ${message.role === 'user' ? 'flex-row-reverse' : ''}`}
-                >
-                  <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
-                      message.role === 'user'
-                        ? 'bg-primary'
-                        : 'bg-gradient-to-br from-primary to-accent'
-                    }`}
-                  >
-                    {message.role === 'user' ? (
-                      <User className="w-4 h-4 text-primary-foreground" />
-                    ) : (
-                      <Bot className="w-4 h-4 text-primary-foreground" />
-                    )}
-                  </div>
-                  <div
-                    className={`max-w-[80%] p-4 rounded-2xl ${
-                      message.role === 'user'
-                        ? 'bg-primary text-primary-foreground rounded-br-md'
-                        : 'bg-secondary text-secondary-foreground rounded-bl-md'
-                    }`}
-                  >
-                    <p className="text-sm whitespace-pre-line">{message.content}</p>
-                  </div>
-                </div>
-              ))}
-
-              {isTyping && (
-                <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-                    <Bot className="w-4 h-4 text-primary-foreground" />
-                  </div>
-                  <div className="bg-secondary p-4 rounded-2xl rounded-bl-md">
-                    <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
-                  </div>
-                </div>
-              )}
-              <div ref={messagesEndRef} />
-            </div>
-
-            {/* Sample Questions */}
-            <div className="px-6 py-3 border-t border-border bg-secondary/30">
-              <p className="text-xs text-muted-foreground mb-2">Try asking:</p>
-              <div className="flex flex-wrap gap-2">
-                {sampleQuestions.map((question) => (
-                  <button
-                    key={question}
-                    onClick={() => handleSampleQuestion(question)}
-                    className="text-xs px-3 py-1.5 bg-secondary hover:bg-secondary/80 text-secondary-foreground rounded-full transition-colors"
-                  >
-                    {question}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Input Form */}
-            <form onSubmit={handleSubmit} className="p-4 border-t border-border">
-              <div className="flex gap-3">
-                <input
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask me anything about TAMILSELVAN..."
-                  className="flex-1 bg-secondary border-0 rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-                />
-                <Button type="submit" variant="hero" size="icon" className="shrink-0 h-12 w-12 rounded-xl">
-                  <Send className="h-4 w-4" />
-                </Button>
-              </div>
-            </form>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="p-1.5 rounded-lg hover:bg-secondary/50 transition-colors"
+            >
+              <X className="w-4 h-4 text-muted-foreground" />
+            </button>
           </div>
 
-          {/* Info Note */}
-          <p className="text-center text-xs text-muted-foreground mt-4">
-            This chatbot uses RAG (Retrieval-Augmented Generation) to provide accurate answers about TAMILSELVAN P.
-          </p>
+          {/* Messages */}
+          <div className="h-80 overflow-y-auto p-4 space-y-3 bg-background/50">
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={`flex gap-2 ${message.role === 'user' ? 'flex-row-reverse' : ''}`}
+              >
+                <div
+                  className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 ${
+                    message.role === 'user'
+                      ? 'bg-primary'
+                      : 'bg-gradient-to-br from-primary to-accent'
+                  }`}
+                >
+                  {message.role === 'user' ? (
+                    <User className="w-3.5 h-3.5 text-primary-foreground" />
+                  ) : (
+                    <Bot className="w-3.5 h-3.5 text-primary-foreground" />
+                  )}
+                </div>
+                <div
+                  className={`max-w-[75%] p-3 rounded-2xl text-sm ${
+                    message.role === 'user'
+                      ? 'bg-primary text-primary-foreground rounded-br-md'
+                      : 'bg-secondary text-secondary-foreground rounded-bl-md'
+                  }`}
+                >
+                  <p className="whitespace-pre-line leading-relaxed">{message.content}</p>
+                </div>
+              </div>
+            ))}
+
+            {isTyping && (
+              <div className="flex gap-2">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+                  <Bot className="w-3.5 h-3.5 text-primary-foreground" />
+                </div>
+                <div className="bg-secondary p-3 rounded-2xl rounded-bl-md">
+                  <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
+                </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Sample Questions */}
+          <div className="px-4 py-2 border-t border-border bg-secondary/30">
+            <div className="flex flex-wrap gap-1.5">
+              {sampleQuestions.map((question) => (
+                <button
+                  key={question}
+                  onClick={() => handleSampleQuestion(question)}
+                  className="text-xs px-2.5 py-1 bg-secondary hover:bg-secondary/80 text-secondary-foreground rounded-full transition-colors"
+                >
+                  {question}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Input Form */}
+          <form onSubmit={handleSubmit} className="p-3 border-t border-border bg-background/80">
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Ask me anything..."
+                className="flex-1 bg-secondary border-0 rounded-xl px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+              />
+              <Button type="submit" variant="hero" size="icon" className="shrink-0 h-10 w-10 rounded-xl">
+                <Send className="h-4 w-4" />
+              </Button>
+            </div>
+          </form>
         </div>
       </div>
-    </section>
+    </>
   );
 };
 
-export default ChatbotSection;
+export default FloatingChatbot;

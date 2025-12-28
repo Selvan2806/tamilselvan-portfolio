@@ -1,13 +1,44 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { Helmet } from 'react-helmet-async';
+import Navigation from '@/components/Navigation';
+import HeroSection from '@/components/HeroSection';
+import AboutSection from '@/components/AboutSection';
+import SkillsSection from '@/components/SkillsSection';
+import ProjectsSection from '@/components/ProjectsSection';
+import ExperienceSection from '@/components/ExperienceSection';
+import ChatbotSection from '@/components/ChatbotSection';
+import ContactSection from '@/components/ContactSection';
+import Footer from '@/components/Footer';
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <>
+      <Helmet>
+        <title>TAMILSELVAN P | Full-Stack Developer & AI Enthusiast</title>
+        <meta 
+          name="description" 
+          content="TAMILSELVAN P - Full-Stack Developer specializing in React, Node.js, Python, and AI/ML. Building intelligent web applications with modern technologies." 
+        />
+        <meta name="keywords" content="TAMILSELVAN P, Full Stack Developer, React, Node.js, Python, AI, Machine Learning, Web Developer, Portfolio" />
+        <meta property="og:title" content="TAMILSELVAN P | Full-Stack Developer & AI Enthusiast" />
+        <meta property="og:description" content="Building intelligent, scalable web applications with modern technologies." />
+        <meta property="og:type" content="website" />
+        <link rel="canonical" href="/" />
+      </Helmet>
+      
+      <div className="min-h-screen bg-background">
+        <Navigation />
+        <main>
+          <HeroSection />
+          <AboutSection />
+          <SkillsSection />
+          <ProjectsSection />
+          <ExperienceSection />
+          <ChatbotSection />
+          <ContactSection />
+        </main>
+        <Footer />
       </div>
-    </div>
+    </>
   );
 };
 

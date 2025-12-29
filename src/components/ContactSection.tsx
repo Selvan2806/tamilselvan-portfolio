@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Mail, Phone, MapPin, Send, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { motion } from 'framer-motion';
 
 const contactInfo = [
   {
@@ -59,7 +60,13 @@ const ContactSection = () => {
     <section id="contact" className="py-24 relative bg-secondary/20">
       <div className="section-container">
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+        >
           <span className="text-primary text-sm font-semibold uppercase tracking-widest">Contact</span>
           <h2 className="font-heading text-4xl sm:text-5xl font-bold mt-4 mb-6">
             Let's{' '}
@@ -70,21 +77,31 @@ const ContactSection = () => {
             I'd love to hear from you. Let's create something amazing together.
           </p>
           <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full mt-6" />
-        </div>
+        </motion.div>
 
         <div className="grid lg:grid-cols-5 gap-12">
           {/* Contact Info */}
-          <div className="lg:col-span-2 space-y-6">
+          <motion.div 
+            className="lg:col-span-2 space-y-6"
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
             <div className="glass-card p-8">
               <h3 className="font-heading text-xl font-bold mb-6 text-foreground">
                 Get in Touch
               </h3>
               <div className="space-y-6">
-                {contactInfo.map((info) => (
-                  <a
+                {contactInfo.map((info, index) => (
+                  <motion.a
                     key={info.label}
                     href={info.href}
                     className="flex items-start gap-4 group"
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: 0.1 * index }}
                   >
                     <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors shrink-0">
                       <info.icon className="w-5 h-5 text-primary" />
@@ -95,13 +112,19 @@ const ContactSection = () => {
                         {info.value}
                       </p>
                     </div>
-                  </a>
+                  </motion.a>
                 ))}
               </div>
             </div>
 
             {/* Social Links */}
-            <div className="glass-card p-8">
+            <motion.div 
+              className="glass-card p-8"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
               <h3 className="font-heading text-xl font-bold mb-6 text-foreground">
                 Follow Me
               </h3>
@@ -137,11 +160,17 @@ const ContactSection = () => {
                   </svg>
                 </a>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Contact Form */}
-          <div className="lg:col-span-3">
+          <motion.div 
+            className="lg:col-span-3"
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
             <form onSubmit={handleSubmit} className="glass-card p-8">
               <h3 className="font-heading text-xl font-bold mb-6 text-foreground">
                 Send a Message
@@ -225,7 +254,7 @@ const ContactSection = () => {
                 )}
               </Button>
             </form>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

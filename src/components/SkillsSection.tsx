@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 
 type SkillCategory = 'all' | 'languages' | 'frontend' | 'backend' | 'tools' | 'ai';
 
@@ -51,17 +52,29 @@ const SkillsSection = () => {
     <section id="skills" className="py-24 relative bg-secondary/20">
       <div className="section-container">
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+        >
           <span className="text-primary text-sm font-semibold uppercase tracking-widest">Skills</span>
           <h2 className="font-heading text-4xl sm:text-5xl font-bold mt-4 mb-6">
             Technologies &{' '}
             <span className="gradient-text">Expertise</span>
           </h2>
           <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full" />
-        </div>
+        </motion.div>
 
         {/* Category Filter */}
-        <div className="flex flex-wrap justify-center gap-2 mb-12">
+        <motion.div 
+          className="flex flex-wrap justify-center gap-2 mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
           {categories.map((category) => (
             <button
               key={category.id}
@@ -75,15 +88,24 @@ const SkillsSection = () => {
               {category.label}
             </button>
           ))}
-        </div>
+        </motion.div>
 
         {/* Skills Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <motion.div 
+          className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
           {filteredSkills.map((skill, index) => (
-            <div
+            <motion.div
               key={skill.name}
               className="glass-card p-5 hover:border-primary/30 transition-all duration-300 group"
-              style={{ animationDelay: `${index * 0.05}s` }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.05 * index }}
             >
               <div className="flex items-center justify-between mb-3">
                 <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
@@ -92,17 +114,26 @@ const SkillsSection = () => {
                 <span className="text-sm text-muted-foreground">{skill.level}%</span>
               </div>
               <div className="h-2 bg-secondary rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-gradient-to-r from-primary to-accent rounded-full transition-all duration-700 ease-out"
-                  style={{ width: `${skill.level}%` }}
+                <motion.div
+                  className="h-full bg-gradient-to-r from-primary to-accent rounded-full"
+                  initial={{ width: 0 }}
+                  whileInView={{ width: `${skill.level}%` }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.1 * index, ease: "easeOut" }}
                 />
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Tech Background Summary */}
-        <div className="mt-16 glass-card p-8 lg:p-12">
+        <motion.div 
+          className="mt-16 glass-card p-8 lg:p-12"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
           <h3 className="font-heading text-2xl font-bold mb-6 gradient-text">Technological Background</h3>
           <div className="grid md:grid-cols-2 gap-8 text-muted-foreground">
             <div>
@@ -138,7 +169,7 @@ const SkillsSection = () => {
               </p>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

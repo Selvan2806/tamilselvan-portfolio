@@ -1,4 +1,5 @@
 import { Briefcase, GraduationCap, Award } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface TimelineItem {
   type: 'work' | 'education' | 'achievement';
@@ -60,33 +61,53 @@ const ExperienceSection = () => {
     <section id="experience" className="py-24 relative bg-secondary/20">
       <div className="section-container">
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+        >
           <span className="text-primary text-sm font-semibold uppercase tracking-widest">Experience</span>
           <h2 className="font-heading text-4xl sm:text-5xl font-bold mt-4 mb-6">
             Career{' '}
             <span className="gradient-text">Journey</span>
           </h2>
           <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full" />
-        </div>
+        </motion.div>
 
         {/* Timeline */}
         <div className="relative max-w-3xl mx-auto">
           {/* Timeline Line */}
-          <div className="absolute left-8 top-0 bottom-0 w-px bg-gradient-to-b from-primary via-accent to-transparent" />
+          <motion.div 
+            className="absolute left-8 top-0 bottom-0 w-px bg-gradient-to-b from-primary via-accent to-transparent"
+            initial={{ scaleY: 0, originY: 0 }}
+            whileInView={{ scaleY: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, ease: "easeOut" }}
+          />
 
           {/* Timeline Items */}
           <div className="space-y-8">
             {timeline.map((item, index) => {
               const Icon = getIcon(item.type);
               return (
-                <div
+                <motion.div
                   key={index}
                   className="relative pl-20 group"
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.5, delay: 0.15 * index }}
                 >
                   {/* Icon */}
-                  <div className="absolute left-0 w-16 h-16 rounded-full glass-card flex items-center justify-center border-2 border-primary/30 group-hover:border-primary transition-colors bg-background">
+                  <motion.div 
+                    className="absolute left-0 w-16 h-16 rounded-full glass-card flex items-center justify-center border-2 border-primary/30 group-hover:border-primary transition-colors bg-background"
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.2 }}
+                  >
                     <Icon className="w-6 h-6 text-primary" />
-                  </div>
+                  </motion.div>
 
                   {/* Content */}
                   <div className="glass-card p-6 hover:border-primary/30 transition-all duration-300">
@@ -120,14 +141,20 @@ const ExperienceSection = () => {
                       </div>
                     )}
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </div>
         </div>
 
         {/* Resume Download */}
-        <div className="text-center mt-16">
+        <motion.div 
+          className="text-center mt-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
           <a
             href="#"
             className="inline-flex items-center gap-2 px-6 py-3 glass-card hover:border-primary/50 transition-all duration-300 text-foreground font-medium"
@@ -137,7 +164,7 @@ const ExperienceSection = () => {
             </svg>
             Download Resume
           </a>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

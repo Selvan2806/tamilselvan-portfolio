@@ -156,7 +156,8 @@ const ExperienceSection = () => {
           transition={{ duration: 0.5, delay: 0.3 }}
         >
           <a
-            href="#"
+            href="/resume.pdf"
+            download="TAMILSELVAN_P_Resume.pdf"
             className="inline-flex items-center gap-2 px-6 py-3 glass-card hover:border-primary/50 transition-all duration-300 text-foreground font-medium"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

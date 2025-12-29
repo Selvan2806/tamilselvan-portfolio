@@ -155,16 +155,24 @@ const ExperienceSection = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          <a
-            href="/resume.pdf"
-            download="TAMILSELVAN_P_Resume.pdf"
-            className="inline-flex items-center gap-2 px-6 py-3 glass-card hover:border-primary/50 transition-all duration-300 text-foreground font-medium"
+          <button
+            onClick={() => {
+              const link = document.createElement('a');
+              link.href = '/resume.pdf';
+              link.download = 'TAMILSELVAN_P_Resume.pdf';
+              link.target = '_blank';
+              link.rel = 'noopener noreferrer';
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+            }}
+            className="inline-flex items-center gap-2 px-6 py-3 glass-card hover:border-primary/50 transition-all duration-300 text-foreground font-medium cursor-pointer"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
             Download Resume
-          </a>
+          </button>
         </motion.div>
       </div>
     </section>

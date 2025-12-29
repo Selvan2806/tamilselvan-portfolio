@@ -1,5 +1,5 @@
 import { ExternalLink, Github, Folder } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { motion } from 'framer-motion';
 
 interface Project {
   title: string;
@@ -66,32 +66,46 @@ const ProjectsSection = () => {
     <section id="projects" className="py-24 relative">
       <div className="section-container">
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+        >
           <span className="text-primary text-sm font-semibold uppercase tracking-widest">Projects</span>
           <h2 className="font-heading text-4xl sm:text-5xl font-bold mt-4 mb-6">
             Featured{' '}
             <span className="gradient-text">Work</span>
           </h2>
           <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full" />
-        </div>
+        </motion.div>
 
         {/* Featured Projects */}
         <div className="space-y-8 mb-16">
           {featuredProjects.map((project, index) => (
-            <div
+            <motion.div
               key={project.title}
               className={`glass-card p-6 lg:p-8 hover:border-primary/30 transition-all duration-300 ${
                 index % 2 === 0 ? '' : 'lg:flex-row-reverse'
               }`}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: 0.1 * index }}
             >
               <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
                 {/* Project Visual Placeholder */}
-                <div className="lg:w-1/2 aspect-video bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg flex items-center justify-center">
+                <motion.div 
+                  className="lg:w-1/2 aspect-video bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg flex items-center justify-center"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                >
                   <div className="text-center p-8">
                     <Folder className="w-16 h-16 text-primary/40 mx-auto mb-4" />
                     <span className="text-muted-foreground text-sm">Project Preview</span>
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Project Info */}
                 <div className="lg:w-1/2 flex flex-col justify-center">
@@ -140,18 +154,28 @@ const ProjectsSection = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
         {/* Other Projects */}
-        <div>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6 }}
+        >
           <h3 className="font-heading text-2xl font-bold text-center mb-8">Other Noteworthy Projects</h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {otherProjects.map((project) => (
-              <div
+            {otherProjects.map((project, index) => (
+              <motion.div
                 key={project.title}
                 className="glass-card p-6 hover:border-primary/30 hover:-translate-y-1 transition-all duration-300 flex flex-col"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.1 * index }}
+                whileHover={{ y: -4 }}
               >
                 <div className="flex items-center justify-between mb-4">
                   <Folder className="w-10 h-10 text-primary" />
@@ -184,10 +208,10 @@ const ProjectsSection = () => {
                     </span>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

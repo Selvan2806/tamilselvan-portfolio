@@ -1,4 +1,5 @@
 import { Code2, Lightbulb, Rocket, Users } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const highlights = [
   {
@@ -28,18 +29,30 @@ const AboutSection = () => {
     <section id="about" className="py-24 relative">
       <div className="section-container">
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+        >
           <span className="text-primary text-sm font-semibold uppercase tracking-widest">About Me</span>
           <h2 className="font-heading text-4xl sm:text-5xl font-bold mt-4 mb-6">
             Passionate Developer &{' '}
             <span className="gradient-text">Tech Enthusiast</span>
           </h2>
           <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full" />
-        </div>
+        </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* About Text */}
-          <div className="space-y-6">
+          <motion.div 
+            className="space-y-6"
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
             <p className="text-lg text-muted-foreground leading-relaxed">
               I'm <span className="text-foreground font-semibold">TAMILSELVAN P</span>, a passionate 
               full-stack developer with a deep interest in building intelligent web applications 
@@ -57,7 +70,13 @@ const AboutSection = () => {
             </p>
 
             {/* Quick Stats */}
-            <div className="flex flex-wrap gap-8 pt-6">
+            <motion.div 
+              className="flex flex-wrap gap-8 pt-6"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
               <div>
                 <div className="text-4xl font-heading font-bold gradient-text">3+</div>
                 <div className="text-sm text-muted-foreground mt-1">Years Experience</div>
@@ -70,16 +89,19 @@ const AboutSection = () => {
                 <div className="text-4xl font-heading font-bold gradient-text">10+</div>
                 <div className="text-sm text-muted-foreground mt-1">Technologies</div>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Highlights Grid */}
           <div className="grid sm:grid-cols-2 gap-4">
             {highlights.map((item, index) => (
-              <div
+              <motion.div
                 key={item.title}
                 className="glass-card p-6 hover:border-primary/30 transition-all duration-300 group"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: 0.1 * index }}
               >
                 <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                   <item.icon className="h-6 w-6 text-primary" />
@@ -90,7 +112,7 @@ const AboutSection = () => {
                 <p className="text-sm text-muted-foreground">
                   {item.description}
                 </p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>

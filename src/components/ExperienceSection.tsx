@@ -1,4 +1,4 @@
-import { Briefcase, GraduationCap, Award } from 'lucide-react';
+import { Briefcase, GraduationCap, Award, Book } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface TimelineItem {

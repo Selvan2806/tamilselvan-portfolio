@@ -157,14 +157,7 @@ const ExperienceSection = () => {
         >
           <button
             onClick={() => {
-              const link = document.createElement('a');
-              link.href = '/resume.pdf';
-              link.download = 'TAMILSELVAN_P_Resume.pdf';
-              link.target = '_blank';
-              link.rel = 'noopener noreferrer';
-              document.body.appendChild(link);
-              link.click();
-              document.body.removeChild(link);
+              window.open('/resume.pdf', '_blank');
             }}
             className="inline-flex items-center gap-2 px-6 py-3 glass-card hover:border-primary/50 transition-all duration-300 text-foreground font-medium cursor-pointer"
           >

@@ -17,7 +17,7 @@ const timeline: TimelineItem[] = [
     organization: 'Annai Mira College of Engineering and Technology',
     period: '2023 - Present',
     description: 'Currently pursuing my third year of studies, building hands-on experience through real-world projects and continuous learning.',
-    skills: ['React', 'Node.js', 'AWS', 'AI Integration'],
+    skills: ['Python', 'React', 'Linux', 'AI Integration'],
   }
 ];
 

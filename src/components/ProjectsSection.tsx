@@ -1,8 +1,8 @@
 import { ExternalLink } from 'lucide-react';
 import { motion } from 'framer-motion';
-import vivaImage from '@/assets/project-viva.png';
+import vivaImage from '@/assets/project-vivas.png';
 import logoImage from '@/assets/project-logo.png';
-import mentalImage from '@/assets/project-mental.png';
+import mentalImage from '@/assets/project-mentals.png';
 
 interface Project {
   title: string;

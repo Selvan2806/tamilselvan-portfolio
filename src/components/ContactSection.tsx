@@ -140,7 +140,7 @@ const ContactSection = () => {
                   </svg>
                 </a>
                 <a
-                  href="https://linkedin.com"
+                  href="https://www.linkedin.com/in/tamilselvan-p-56134130a"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-12 h-12 rounded-lg bg-secondary flex items-center justify-center hover:bg-primary/10 hover:text-primary transition-colors"
@@ -150,7 +150,7 @@ const ContactSection = () => {
                   </svg>
                 </a>
                 <a
-                  href="https://twitter.com"
+                  href="https://x.com/SELVANTAMIL2006"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-12 h-12 rounded-lg bg-secondary flex items-center justify-center hover:bg-primary/10 hover:text-primary transition-colors"

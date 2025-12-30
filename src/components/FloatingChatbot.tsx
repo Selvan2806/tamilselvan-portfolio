@@ -11,7 +11,7 @@ interface Message {
 const sampleQuestions = [
   "What are your skills?",
   "Tell me about your experience",
-  "What projects have you worked on?",
+  "Download resume",
   "How can I contact you?",
 ];
 
@@ -65,6 +65,11 @@ const generateResponse = (query: string): string => {
   
   if (lowerQuery.includes('contact') || lowerQuery.includes('email') || lowerQuery.includes('phone') || lowerQuery.includes('reach')) {
     return `You can reach me through:\n\n📧 **Email**: ${knowledgeBase.email}\n📱 **Phone**: ${knowledgeBase.phone}\n\nFeel free to get in touch for collaboration opportunities!`;
+  }
+
+  if (lowerQuery.includes('resume') || lowerQuery.includes('cv') || lowerQuery.includes('download')) {
+    window.open('/resume.pdf', '_blank');
+    return `📄 I've opened the resume in a new tab for you! You can download or view TAMILSELVAN P's complete resume there.\n\nThe resume includes detailed information about education, work experience, skills, and achievements.`;
   }
   
   if (lowerQuery.includes('education') || lowerQuery.includes('study') || lowerQuery.includes('degree')) {
@@ -129,7 +134,7 @@ const FloatingChatbot = () => {
     setInput('');
     setIsTyping(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 800));
+    await new Promise((resolve) => setTimeout(resolve, 400));
 
     const response = generateResponse(userMessage.content);
     

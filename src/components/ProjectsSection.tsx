@@ -1,5 +1,8 @@
-import { ExternalLink, Folder } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 import { motion } from 'framer-motion';
+import vivaImage from '@/assets/project-viva.png';
+import logoImage from '@/assets/project-logo.png';
+import mentalImage from '@/assets/project-mental.png';
 
 interface Project {
   title: string;
@@ -8,6 +11,7 @@ interface Project {
   github?: string;
   live?: string;
   featured: boolean;
+  image?: string;
 }
 
 const projects: Project[] = [
@@ -17,6 +21,7 @@ const projects: Project[] = [
     technologies: ['React', 'TypeScript', 'AI/ML', 'Tailwind CSS', 'Supabase'],
     live: 'https://viva-preparation-site.lovable.app',
     featured: true,
+    image: vivaImage,
   },
   {
     title: 'Logo Maker',
@@ -24,6 +29,7 @@ const projects: Project[] = [
     technologies: ['React', 'TypeScript', 'RAG Models', 'AI Image Generation', 'Tailwind CSS'],
     live: 'https://preview--dzp68o7yc4kb.trickle.host',
     featured: true,
+    image: logoImage,
   },
   {
     title: 'Mental Health Assistant',
@@ -31,6 +37,7 @@ const projects: Project[] = [
     technologies: ['React', 'TypeScript', 'AI/NLP', 'Supabase', 'Tailwind CSS'],
     live: 'https://hug-mind-guide.lovable.app',
     featured: true,
+    image: mentalImage,
   },
 ];
 
@@ -70,16 +77,17 @@ const ProjectsSection = () => {
               transition={{ duration: 0.6, delay: 0.1 * index }}
             >
               <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
-                {/* Project Visual Placeholder */}
+                {/* Project Image */}
                 <motion.div 
-                  className="lg:w-1/2 aspect-video bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg flex items-center justify-center"
+                  className="lg:w-1/2 aspect-video rounded-lg overflow-hidden"
                   whileHover={{ scale: 1.02 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <div className="text-center p-8">
-                    <Folder className="w-16 h-16 text-primary/40 mx-auto mb-4" />
-                    <span className="text-muted-foreground text-sm">Project Preview</span>
-                  </div>
+                  <img 
+                    src={project.image} 
+                    alt={project.title}
+                    className="w-full h-full object-cover"
+                  />
                 </motion.div>
 
                 {/* Project Info */}

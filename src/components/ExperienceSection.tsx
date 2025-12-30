@@ -2,7 +2,7 @@ import { Briefcase, GraduationCap, Award } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface TimelineItem {
-  type: 'work' | 'education' | 'achievement';
+  type: 'work' | 'education' | 'achievement' | 'Learning' ;
   title: string;
   organization: string;
   period: string;
@@ -12,35 +12,13 @@ interface TimelineItem {
 
 const timeline: TimelineItem[] = [
   {
-    type: 'work',
-    title: 'Full-Stack Developer',
-    organization: 'Tech Company',
+    type: 'Learning',
+    title: 'Bachelor of Engineering in Computer Science',
+    organization: 'Annai Mira College of Engineering and Technology',
     period: '2023 - Present',
-    description: 'Leading development of web applications using React, Node.js, and cloud technologies. Implementing AI features and optimizing performance for scalable solutions.',
+    description: 'Currently pursuing my third year of studies, building hands-on experience through real-world projects and continuous learning.',
     skills: ['React', 'Node.js', 'AWS', 'AI Integration'],
-  },
-  {
-    type: 'work',
-    title: 'Software Developer Intern',
-    organization: 'Startup Inc',
-    period: '2022 - 2023',
-    description: 'Developed and maintained web applications, collaborated with cross-functional teams, and participated in agile development processes.',
-    skills: ['Python', 'Django', 'PostgreSQL', 'Git'],
-  },
-  {
-    type: 'education',
-    title: 'B.Tech in Computer Science',
-    organization: 'University Name',
-    period: '2019 - 2023',
-    description: 'Specialized in software engineering and artificial intelligence. Completed coursework in algorithms, data structures, machine learning, and web technologies.',
-  },
-  {
-    type: 'achievement',
-    title: 'Hackathon Winner',
-    organization: 'National Level Competition',
-    period: '2022',
-    description: 'First place in a 48-hour hackathon for developing an innovative AI-powered solution for healthcare diagnostics.',
-  },
+  }
 ];
 
 const getIcon = (type: TimelineItem['type']) => {
@@ -51,6 +29,8 @@ const getIcon = (type: TimelineItem['type']) => {
       return GraduationCap;
     case 'achievement':
       return Award;
+    case 'Learning':
+      return Book
     default:
       return Briefcase;
   }

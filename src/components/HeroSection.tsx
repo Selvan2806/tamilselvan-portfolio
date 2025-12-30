@@ -120,7 +120,7 @@ const HeroSection = () => {
               transition={{ duration: 0.5, delay: 0.6 }}
             >
               <a
-                href="https://github.com"
+                href="https://github.com/Selvan2806"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-3 rounded-full glass-card hover:bg-primary/10 hover:border-primary/50 transition-all duration-300 group"
@@ -128,7 +128,7 @@ const HeroSection = () => {
                 <Github className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
               </a>
               <a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/in/tamilselvan-p-56134130a/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-3 rounded-full glass-card hover:bg-primary/10 hover:border-primary/50 transition-all duration-300 group"

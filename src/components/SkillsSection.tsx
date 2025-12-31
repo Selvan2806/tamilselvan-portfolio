@@ -1,35 +1,36 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Star } from 'lucide-react';
 
 type SkillCategory = 'all' | 'languages' | 'frontend' | 'backend' | 'tools' | 'ai';
 
 interface Skill {
   name: string;
   category: SkillCategory[];
-  level: number;
+  level: number; // 1-5 stars
 }
 
 const skills: Skill[] = [
-  { name: 'Python', category: ['languages', 'ai', 'backend'], level: 90 },
-  { name: 'JavaScript', category: ['languages', 'frontend'], level: 92 },
-  { name: 'TypeScript', category: ['languages', 'frontend'], level: 88 },
-  { name: 'Java', category: ['languages', 'backend'], level: 80 },
-  { name: 'SQL', category: ['languages', 'backend'], level: 85 },
-  { name: 'React', category: ['frontend'], level: 90 },
-  { name: 'Next.js', category: ['frontend'], level: 85 },
-  { name: 'Tailwind CSS', category: ['frontend'], level: 92 },
-  { name: 'Node.js', category: ['backend'], level: 88 },
-  { name: 'Express.js', category: ['backend'], level: 85 },
-  { name: 'FastAPI', category: ['backend', 'ai'], level: 82 },
-  { name: 'PostgreSQL', category: ['backend'], level: 85 },
-  { name: 'MongoDB', category: ['backend'], level: 80 },
-  { name: 'TensorFlow', category: ['ai'], level: 75 },
-  { name: 'PyTorch', category: ['ai'], level: 78 },
-  { name: 'LangChain', category: ['ai'], level: 80 },
-  { name: 'Docker', category: ['tools'], level: 82 },
-  { name: 'Git', category: ['tools'], level: 90 },
-  { name: 'AWS', category: ['tools'], level: 75 },
-  { name: 'Linux', category: ['tools'], level: 80 },
+  { name: 'Python', category: ['languages', 'ai', 'backend'], level: 5 },
+  { name: 'JavaScript', category: ['languages', 'frontend'], level: 5 },
+  { name: 'TypeScript', category: ['languages', 'frontend'], level: 4 },
+  { name: 'Java', category: ['languages', 'backend'], level: 4 },
+  { name: 'SQL', category: ['languages', 'backend'], level: 4 },
+  { name: 'React', category: ['frontend'], level: 5 },
+  { name: 'Next.js', category: ['frontend'], level: 4 },
+  { name: 'Tailwind CSS', category: ['frontend'], level: 5 },
+  { name: 'Node.js', category: ['backend'], level: 4 },
+  { name: 'Express.js', category: ['backend'], level: 4 },
+  { name: 'FastAPI', category: ['backend', 'ai'], level: 4 },
+  { name: 'PostgreSQL', category: ['backend'], level: 4 },
+  { name: 'MongoDB', category: ['backend'], level: 4 },
+  { name: 'TensorFlow', category: ['ai'], level: 4 },
+  { name: 'PyTorch', category: ['ai'], level: 4 },
+  { name: 'LangChain', category: ['ai'], level: 4 },
+  { name: 'Docker', category: ['tools'], level: 4 },
+  { name: 'Git', category: ['tools'], level: 5 },
+  { name: 'AWS', category: ['tools'], level: 4 },
+  { name: 'Linux', category: ['tools'], level: 4 },
 ];
 
 const categories = [
@@ -40,6 +41,30 @@ const categories = [
   { id: 'ai', label: 'AI/ML' },
   { id: 'tools', label: 'Tools' },
 ];
+
+const StarRating = ({ level, index }: { level: number; index: number }) => {
+  return (
+    <div className="flex gap-0.5">
+      {[1, 2, 3, 4, 5].map((star) => (
+        <motion.div
+          key={star}
+          initial={{ opacity: 0, scale: 0 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.3, delay: 0.05 * index + 0.1 * star }}
+        >
+          <Star
+            className={`w-4 h-4 ${
+              star <= level
+                ? 'fill-primary text-primary'
+                : 'fill-transparent text-muted-foreground/30'
+            }`}
+          />
+        </motion.div>
+      ))}
+    </div>
+  );
+};
 
 const SkillsSection = () => {
   const [activeCategory, setActiveCategory] = useState<SkillCategory>('all');
@@ -107,20 +132,11 @@ const SkillsSection = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: 0.05 * index }}
             >
-              <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center justify-between">
                 <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
                   {skill.name}
                 </h3>
-                <span className="text-sm text-muted-foreground">{skill.level}%</span>
-              </div>
-              <div className="h-2 bg-secondary rounded-full overflow-hidden">
-                <motion.div
-                  className="h-full bg-gradient-to-r from-primary to-accent rounded-full"
-                  initial={{ width: 0 }}
-                  whileInView={{ width: `${skill.level}%` }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.1 * index, ease: "easeOut" }}
-                />
+                <StarRating level={skill.level} index={index} />
               </div>
             </motion.div>
           ))}

@@ -107,8 +107,12 @@ const HeroSection = () => {
               <Button variant="hero" size="xl" asChild>
                 <a href="#projects">View My Work</a>
               </Button>
-              <Button variant="hero-outline" size="xl" asChild>
-                <a href="#contact">Get In Touch</a>
+              <Button 
+                variant="hero-outline" 
+                size="xl" 
+                onClick={() => window.dispatchEvent(new CustomEvent('open-chatbot'))}
+              >
+                Chat with Assistant
               </Button>
             </motion.div>
 

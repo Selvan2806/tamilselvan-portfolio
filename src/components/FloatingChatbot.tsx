@@ -36,6 +36,12 @@ const FloatingChatbot = () => {
   };
 
   useEffect(() => {
+    const handleOpenChatbot = () => setIsOpen(true);
+    window.addEventListener('open-chatbot', handleOpenChatbot);
+    return () => window.removeEventListener('open-chatbot', handleOpenChatbot);
+  }, []);
+
+  useEffect(() => {
     scrollToBottom();
   }, [messages]);
 

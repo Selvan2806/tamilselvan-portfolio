@@ -78,11 +78,7 @@ const AboutSection = () => {
               transition={{ duration: 0.5, delay: 0.4 }}
             >
               <div>
-                <div className="text-4xl font-heading font-bold gradient-text">3+</div>
-                <div className="text-sm text-muted-foreground mt-1">Years Experience</div>
-              </div>
-              <div>
-                <div className="text-4xl font-heading font-bold gradient-text">15+</div>
+                <div className="text-4xl font-heading font-bold gradient-text">5+</div>
                 <div className="text-sm text-muted-foreground mt-1">Projects Completed</div>
               </div>
               <div>

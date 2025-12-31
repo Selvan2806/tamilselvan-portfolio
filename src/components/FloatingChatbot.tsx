@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User, Sparkles, Loader2, X, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 interface Message {
   id: string;
@@ -10,94 +11,12 @@ interface Message {
 
 const sampleQuestions = [
   "What are your skills?",
-  "Tell me about your experience",
+  "Tell me about your projects",
   "Download resume",
   "How can I contact you?",
 ];
 
-// Knowledge base for the RAG chatbot
-const knowledgeBase = {
-  name: "TAMILSELVAN P",
-  email: "Selvanaptamil@gmail.com",
-  phone: "7806860579",
-  role: "Full-Stack Developer & AI Enthusiast",
-  experience: "3+ years of experience in full-stack development with expertise in React, Node.js, Python, and AI/ML technologies.",
-  skills: {
-    languages: ["Python", "JavaScript", "TypeScript", "Java", "SQL"],
-    frontend: ["React", "Next.js", "Tailwind CSS", "HTML5", "CSS3"],
-    backend: ["Node.js", "Express.js", "FastAPI", "Django"],
-    databases: ["PostgreSQL", "MongoDB", "Redis"],
-    ai: ["TensorFlow", "PyTorch", "LangChain", "OpenAI", "RAG Systems"],
-    tools: ["Docker", "Git", "AWS", "Linux", "CI/CD"],
-  },
-  projects: [
-    "AI-Powered Task Manager with OpenAI integration",
-    "E-Commerce Platform with Stripe payments",
-    "Real-time Chat Application with WebSocket",
-    "Machine Learning Dashboard for model analytics",
-  ],
-  education: "B.Tech in Computer Science with specialization in AI and Software Engineering",
-  interests: "Building intelligent web applications, contributing to open-source, exploring AI/ML advancements",
-};
-
-// Simple RAG-like response generation
-const generateResponse = (query: string): string => {
-  const lowerQuery = query.toLowerCase();
-  
-  if (lowerQuery.includes('name') || lowerQuery.includes('who')) {
-    return `I'm ${knowledgeBase.name}, a ${knowledgeBase.role}. I have ${knowledgeBase.experience}`;
-  }
-  
-  if (lowerQuery.includes('skill') || lowerQuery.includes('technology') || lowerQuery.includes('tech stack') || lowerQuery.includes('know')) {
-    const allSkills = Object.entries(knowledgeBase.skills)
-      .map(([category, skills]) => `**${category.charAt(0).toUpperCase() + category.slice(1)}**: ${skills.join(', ')}`)
-      .join('\n');
-    return `Here are my technical skills:\n\n${allSkills}`;
-  }
-  
-  if (lowerQuery.includes('project') || lowerQuery.includes('work') || lowerQuery.includes('built')) {
-    return `I've worked on several notable projects:\n\n${knowledgeBase.projects.map((p, i) => `${i + 1}. ${p}`).join('\n')}\n\nEach project showcases my ability to build full-stack applications with modern technologies.`;
-  }
-  
-  if (lowerQuery.includes('experience') || lowerQuery.includes('background')) {
-    return `${knowledgeBase.experience}\n\nMy educational background: ${knowledgeBase.education}\n\nI'm passionate about ${knowledgeBase.interests}.`;
-  }
-  
-  if (lowerQuery.includes('contact') || lowerQuery.includes('email') || lowerQuery.includes('phone') || lowerQuery.includes('reach')) {
-    return `You can reach me through:\n\n📧 **Email**: ${knowledgeBase.email}\n📱 **Phone**: ${knowledgeBase.phone}\n\nFeel free to get in touch for collaboration opportunities!`;
-  }
-
-  if (lowerQuery.includes('resume') || lowerQuery.includes('cv') || lowerQuery.includes('download')) {
-    window.open('/resume.pdf', '_blank');
-    return `📄 I've opened the resume in a new tab for you! You can download or view TAMILSELVAN P's complete resume there.\n\nThe resume includes detailed information about education, work experience, skills, and achievements.`;
-  }
-  
-  if (lowerQuery.includes('education') || lowerQuery.includes('study') || lowerQuery.includes('degree')) {
-    return `I completed my ${knowledgeBase.education}. During my studies, I specialized in algorithms, data structures, machine learning, and web technologies.`;
-  }
-  
-  if (lowerQuery.includes('interest') || lowerQuery.includes('passion') || lowerQuery.includes('hobby')) {
-    return `I'm passionate about ${knowledgeBase.interests}. I believe in continuous learning and staying updated with the latest in technology.`;
-  }
-  
-  if (lowerQuery.includes('ai') || lowerQuery.includes('machine learning') || lowerQuery.includes('ml')) {
-    return `I have hands-on experience with AI/ML technologies including:\n\n${knowledgeBase.skills.ai.join(', ')}\n\nI specialize in building RAG applications, integrating LLMs, and creating intelligent chatbots like this one!`;
-  }
-  
-  if (lowerQuery.includes('frontend') || lowerQuery.includes('front-end') || lowerQuery.includes('ui')) {
-    return `For frontend development, I work with:\n\n${knowledgeBase.skills.frontend.join(', ')}\n\nI focus on creating responsive, accessible, and performant user interfaces.`;
-  }
-  
-  if (lowerQuery.includes('backend') || lowerQuery.includes('back-end') || lowerQuery.includes('server')) {
-    return `On the backend, I work with:\n\n${knowledgeBase.skills.backend.join(', ')}\n\nI build scalable APIs and microservices with a focus on security and performance.`;
-  }
-  
-  if (lowerQuery.includes('hello') || lowerQuery.includes('hi') || lowerQuery.includes('hey')) {
-    return `Hello! 👋 I'm an AI assistant here to help you learn more about ${knowledgeBase.name}. Feel free to ask me about his skills, projects, experience, or how to get in touch!`;
-  }
-  
-  return `I'd be happy to tell you more about ${knowledgeBase.name}. You can ask me about:\n\n• Technical skills and technologies\n• Projects and work experience\n• Educational background\n• How to get in contact\n• AI/ML expertise\n\nWhat would you like to know?`;
-};
+const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/portfolio-chat`;
 
 const FloatingChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -105,7 +24,7 @@ const FloatingChatbot = () => {
     {
       id: '1',
       role: 'assistant',
-      content: `👋 Hi! I'm an AI assistant. Ask me anything about **TAMILSELVAN P**!`,
+      content: `👋 Hi! I'm an AI assistant. Ask me anything about **TAMILSELVAN P** - his skills, projects, experience, or how to get in touch!`,
     },
   ]);
   const [input, setInput] = useState('');
@@ -120,9 +39,92 @@ const FloatingChatbot = () => {
     scrollToBottom();
   }, [messages]);
 
+  const handleResumeDownload = (content: string) => {
+    const lowerContent = content.toLowerCase();
+    if (lowerContent.includes('resume') || lowerContent.includes('cv') || lowerContent.includes('download')) {
+      window.open('/resume.pdf', '_blank');
+    }
+  };
+
+  const streamChat = async (userMessages: Message[]) => {
+    const resp = await fetch(CHAT_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+      },
+      body: JSON.stringify({
+        messages: userMessages.map(m => ({ role: m.role, content: m.content }))
+      }),
+    });
+
+    if (!resp.ok) {
+      const errorData = await resp.json().catch(() => ({}));
+      if (resp.status === 429) {
+        throw new Error("Too many requests. Please wait a moment and try again.");
+      }
+      if (resp.status === 402) {
+        throw new Error("Service temporarily unavailable. Please try again later.");
+      }
+      throw new Error(errorData.error || "Failed to get response");
+    }
+
+    if (!resp.body) throw new Error("No response body");
+
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let textBuffer = "";
+    let assistantContent = "";
+    let streamDone = false;
+
+    while (!streamDone) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      textBuffer += decoder.decode(value, { stream: true });
+
+      let newlineIndex: number;
+      while ((newlineIndex = textBuffer.indexOf("\n")) !== -1) {
+        let line = textBuffer.slice(0, newlineIndex);
+        textBuffer = textBuffer.slice(newlineIndex + 1);
+
+        if (line.endsWith("\r")) line = line.slice(0, -1);
+        if (line.startsWith(":") || line.trim() === "") continue;
+        if (!line.startsWith("data: ")) continue;
+
+        const jsonStr = line.slice(6).trim();
+        if (jsonStr === "[DONE]") {
+          streamDone = true;
+          break;
+        }
+
+        try {
+          const parsed = JSON.parse(jsonStr);
+          const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+          if (content) {
+            assistantContent += content;
+            setMessages(prev => {
+              const last = prev[prev.length - 1];
+              if (last?.role === "assistant" && last.id !== "1") {
+                return prev.map((m, i) => 
+                  i === prev.length - 1 ? { ...m, content: assistantContent } : m
+                );
+              }
+              return [...prev, { id: Date.now().toString(), role: "assistant", content: assistantContent }];
+            });
+          }
+        } catch {
+          textBuffer = line + "\n" + textBuffer;
+          break;
+        }
+      }
+    }
+
+    return assistantContent;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!input.trim() || isTyping) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -130,22 +132,27 @@ const FloatingChatbot = () => {
       content: input.trim(),
     };
 
-    setMessages((prev) => [...prev, userMessage]);
+    // Check for resume download
+    handleResumeDownload(userMessage.content);
+
+    const allMessages = [...messages.filter(m => m.id !== "1"), userMessage];
+    setMessages(prev => [...prev, userMessage]);
     setInput('');
     setIsTyping(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 400));
-
-    const response = generateResponse(userMessage.content);
-    
-    const assistantMessage: Message = {
-      id: (Date.now() + 1).toString(),
-      role: 'assistant',
-      content: response,
-    };
-
-    setMessages((prev) => [...prev, assistantMessage]);
-    setIsTyping(false);
+    try {
+      await streamChat(allMessages);
+    } catch (error) {
+      console.error("Chat error:", error);
+      toast.error(error instanceof Error ? error.message : "Failed to get response");
+      setMessages(prev => [...prev, {
+        id: (Date.now() + 1).toString(),
+        role: 'assistant',
+        content: "I'm sorry, I encountered an error. Please try again in a moment.",
+      }]);
+    } finally {
+      setIsTyping(false);
+    }
   };
 
   const handleSampleQuestion = (question: string) => {
@@ -227,7 +234,7 @@ const FloatingChatbot = () => {
               </div>
             ))}
 
-            {isTyping && (
+            {isTyping && messages[messages.length - 1]?.role !== 'assistant' && (
               <div className="flex gap-2">
                 <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
                   <Bot className="w-3.5 h-3.5 text-primary-foreground" />
@@ -263,9 +270,10 @@ const FloatingChatbot = () => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask me anything..."
-                className="flex-1 bg-secondary border-0 rounded-xl px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                disabled={isTyping}
+                className="flex-1 bg-secondary border-0 rounded-xl px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-50"
               />
-              <Button type="submit" variant="hero" size="icon" className="shrink-0 h-10 w-10 rounded-xl">
+              <Button type="submit" variant="hero" size="icon" className="shrink-0 h-10 w-10 rounded-xl" disabled={isTyping}>
                 <Send className="h-4 w-4" />
               </Button>
             </div>

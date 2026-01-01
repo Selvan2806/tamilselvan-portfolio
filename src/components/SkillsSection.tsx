@@ -13,6 +13,7 @@ interface Skill {
 const skills: Skill[] = [
   { name: 'Python', category: ['languages', 'ai', 'backend'], level: 5 },
   { name: 'JavaScript', category: ['languages', 'frontend'], level: 5 },
+  { name: 'Java', category:['languages', 'backend'], level:3},
   { name: 'SQL', category: ['languages', 'backend'], level: 4 },
   { name: 'React', category: ['frontend'], level: 5 },
   { name: 'Tailwind CSS', category: ['frontend'], level: 5 },
@@ -155,33 +156,31 @@ const SkillsSection = () => {
             <div>
               <h4 className="font-semibold text-foreground mb-3">Frontend Development</h4>
               <p className="leading-relaxed">
-                Expertise in building modern, responsive web applications using React, Next.js, 
-                and TypeScript. Strong focus on user experience, accessibility, and performance 
-                optimization with Tailwind CSS and modern CSS frameworks.
+                I am skilled in creating responsive and interactive web interfaces using HTML, CSS, JavaScript,
+                and React.js. Passionate about clean UI design, performance optimization, and building AI-integrated
+                user experiences.
               </p>
             </div>
             <div>
               <h4 className="font-semibold text-foreground mb-3">Backend Development</h4>
               <p className="leading-relaxed">
-                Proficient in developing scalable APIs and microservices using Node.js, Python, 
-                and FastAPI. Experience with both SQL and NoSQL databases, implementing efficient 
-                data architectures and RESTful services.
+                Backend Developer experienced in building secure APIs, managing databases,
+                and integrating AI-powered services using Python and Java.
+                Focused on performance, scalability, and clean architecture.
               </p>
             </div>
             <div>
               <h4 className="font-semibold text-foreground mb-3">AI & Machine Learning</h4>
               <p className="leading-relaxed">
-                Hands-on experience with AI/ML frameworks including TensorFlow and PyTorch. 
-                Specialized in building RAG applications, integrating LLMs, and implementing 
-                intelligent chatbots using LangChain and vector databases.
+                AI & Machine Learning Developer with experience in NLP, RAG-based models, and AI-powered web applications.
+                Passionate about building intelligent systems that solve real-world problems.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-foreground mb-3">DevOps & Cloud</h4>
+              <h4 className="font-semibold text-foreground mb-3">Penetration Testing</h4>
               <p className="leading-relaxed">
-                Familiar with containerization using Docker, CI/CD pipelines, and cloud 
-                platforms like AWS. Strong command of Git version control and Linux 
-                environments for development and deployment.
+                Aspiring Penetration Tester with hands-on knowledge of reconnaissance, vulnerability assessment, and basic 
+                exploitation techniques, focused on improving system and application security.
               </p>
             </div>
           </div>

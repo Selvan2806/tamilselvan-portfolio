@@ -83,7 +83,7 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              Full-Stack Developer & AI Enthusiast
+              Penetration Tester & AI Enthusiast
             </motion.p>
 
             {/* Description */}
@@ -93,8 +93,8 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              Building intelligent, scalable web applications with modern technologies. 
-              Passionate about creating seamless user experiences powered by AI.
+              Building intelligent, scalable web applications with modern technologies and 
+              Passionate about exploring vulnerablities in Machines.
             </motion.p>
 
             {/* CTA Buttons */}

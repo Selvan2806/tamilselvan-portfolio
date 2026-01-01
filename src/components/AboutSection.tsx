@@ -26,25 +26,28 @@ const highlights = [
 
 const AboutSection = () => {
   return (
-    <section id="about" className="py-24 relative">
+    <section id="about" className="py-28 relative">
+      {/* Decorative elements */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+      
       <div className="section-container">
         {/* Section Header */}
         <motion.div 
-          className="text-center mb-16"
+          className="text-center mb-20"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
         >
-          <span className="text-primary text-sm font-semibold uppercase tracking-widest">About Me</span>
-          <h2 className="font-heading text-4xl sm:text-5xl font-bold mt-4 mb-6">
+          <span className="text-primary text-xs font-medium uppercase tracking-[0.3em]">About Me</span>
+          <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold mt-4 mb-6 tracking-wide">
             Passionate Developer &{' '}
-            <span className="gradient-text">Tech Enthusiast</span>
+            <span className="gradient-text">Visionary</span>
           </h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full" />
+          <div className="luxury-line max-w-xs mx-auto" />
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* About Text */}
           <motion.div 
             className="space-y-6"
@@ -54,7 +57,7 @@ const AboutSection = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <p className="text-lg text-muted-foreground leading-relaxed">
-              I'm <span className="text-foreground font-semibold">TAMILSELVAN P</span>, a passionate 
+              I'm <span className="text-primary font-medium">TAMILSELVAN P</span>, a passionate 
               full-stack developer with a deep interest in building intelligent web applications 
               that make a real impact.
             </p>
@@ -71,41 +74,41 @@ const AboutSection = () => {
 
             {/* Quick Stats */}
             <motion.div 
-              className="flex flex-wrap gap-8 pt-6"
+              className="flex flex-wrap gap-12 pt-8"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
               <div>
-                <div className="text-4xl font-heading font-bold gradient-text">5+</div>
-                <div className="text-sm text-muted-foreground mt-1">Projects Completed</div>
+                <div className="text-5xl font-heading font-semibold gradient-text text-shadow-gold">5+</div>
+                <div className="text-sm text-muted-foreground mt-2 tracking-wide">Projects Completed</div>
               </div>
               <div>
-                <div className="text-4xl font-heading font-bold gradient-text">10+</div>
-                <div className="text-sm text-muted-foreground mt-1">Technologies</div>
+                <div className="text-5xl font-heading font-semibold gradient-text text-shadow-gold">10+</div>
+                <div className="text-sm text-muted-foreground mt-2 tracking-wide">Technologies</div>
               </div>
             </motion.div>
           </motion.div>
 
           {/* Highlights Grid */}
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div className="grid sm:grid-cols-2 gap-5">
             {highlights.map((item, index) => (
               <motion.div
                 key={item.title}
-                className="glass-card p-6 hover:border-primary/30 transition-all duration-300 group"
+                className="glass-card p-7 transition-all duration-500 group"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: 0.1 * index }}
               >
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                  <item.icon className="h-6 w-6 text-primary" />
+                <div className="w-12 h-12 rounded-md bg-primary/10 flex items-center justify-center mb-5 group-hover:bg-primary/20 transition-colors duration-300 border border-primary/20">
+                  <item.icon className="h-5 w-5 text-primary" />
                 </div>
-                <h3 className="font-heading font-semibold text-lg mb-2 text-foreground">
+                <h3 className="font-heading font-semibold text-lg mb-2 text-foreground tracking-wide">
                   {item.title}
                 </h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground leading-relaxed">
                   {item.description}
                 </p>
               </motion.div>

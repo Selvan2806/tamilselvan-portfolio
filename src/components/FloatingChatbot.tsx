@@ -170,7 +170,7 @@ const FloatingChatbot = () => {
       {/* Floating Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-r from-primary to-[hsl(190_80%_45%)] text-primary-foreground shadow-lg hover:shadow-[0_0_30px_hsla(174,72%,56%,0.5)] transition-all duration-300 flex items-center justify-center ${
+        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-md bg-gradient-to-r from-primary via-[hsl(45_70%_68%)] to-primary text-primary-foreground shadow-lg hover:shadow-[0_0_30px_hsla(42,65%,58%,0.4)] transition-all duration-300 flex items-center justify-center ${
           isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100'
         }`}
       >

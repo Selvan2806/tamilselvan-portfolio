@@ -98,27 +98,30 @@ const SkillsSection = () => {
   );
 
   return (
-    <section id="skills" className="py-24 relative bg-secondary/20">
-      <div className="section-container">
+    <section id="skills" className="py-28 relative">
+      {/* Subtle background accent */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-secondary/30 to-transparent" />
+      
+      <div className="section-container relative z-10">
         {/* Section Header */}
         <motion.div 
-          className="text-center mb-16"
+          className="text-center mb-20"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
         >
-          <span className="text-primary text-sm font-semibold uppercase tracking-widest">Skills</span>
-          <h2 className="font-heading text-4xl sm:text-5xl font-bold mt-4 mb-6">
-            Technologies &{' '}
-            <span className="gradient-text">Expertise</span>
+          <span className="text-primary text-xs font-medium uppercase tracking-[0.3em]">Expertise</span>
+          <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold mt-4 mb-6 tracking-wide">
+            Skills &{' '}
+            <span className="gradient-text">Technologies</span>
           </h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full" />
+          <div className="luxury-line max-w-xs mx-auto" />
         </motion.div>
 
         {/* Category Filter */}
         <motion.div 
-          className="flex flex-wrap justify-center gap-2 mb-12"
+          className="flex flex-wrap justify-center gap-3 mb-14"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -128,10 +131,10 @@ const SkillsSection = () => {
             <button
               key={category.id}
               onClick={() => setActiveCategory(category.id as SkillCategory)}
-              className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+              className={`px-6 py-2.5 rounded-md text-xs font-medium uppercase tracking-widest transition-all duration-300 ${
                 activeCategory === category.id
-                  ? 'bg-primary text-primary-foreground shadow-lg'
-                  : 'bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground'
+                  ? 'bg-primary text-primary-foreground shadow-[0_4px_20px_hsla(42,65%,58%,0.25)]'
+                  : 'bg-secondary/60 text-muted-foreground hover:bg-secondary hover:text-foreground border border-transparent hover:border-primary/20'
               }`}
             >
               {category.label}
@@ -154,41 +157,44 @@ const SkillsSection = () => {
 
         {/* Tech Background Summary */}
         <motion.div 
-          className="mt-16 glass-card p-8 lg:p-12"
+          className="mt-20 glass-card p-10 lg:p-14"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <h3 className="font-heading text-2xl font-bold mb-6 gradient-text">Technological Background</h3>
-          <div className="grid md:grid-cols-2 gap-8 text-muted-foreground">
+          <div className="text-center mb-10">
+            <h3 className="font-heading text-2xl lg:text-3xl font-semibold gradient-text tracking-wide">Technical Expertise</h3>
+            <div className="luxury-line max-w-[100px] mx-auto mt-4" />
+          </div>
+          <div className="grid md:grid-cols-2 gap-10 text-muted-foreground">
             <div>
-              <h4 className="font-semibold text-foreground mb-3">Frontend Development</h4>
-              <p className="leading-relaxed">
+              <h4 className="font-medium text-foreground mb-3 tracking-wide">Frontend Development</h4>
+              <p className="leading-relaxed text-sm">
                 Expertise in building modern, responsive web applications using React, Next.js, 
                 and TypeScript. Strong focus on user experience, accessibility, and performance 
                 optimization with Tailwind CSS and modern CSS frameworks.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-foreground mb-3">Backend Development</h4>
-              <p className="leading-relaxed">
+              <h4 className="font-medium text-foreground mb-3 tracking-wide">Backend Development</h4>
+              <p className="leading-relaxed text-sm">
                 Proficient in developing scalable APIs and microservices using Node.js, Python, 
                 and FastAPI. Experience with both SQL and NoSQL databases, implementing efficient 
                 data architectures and RESTful services.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-foreground mb-3">AI & Machine Learning</h4>
-              <p className="leading-relaxed">
+              <h4 className="font-medium text-foreground mb-3 tracking-wide">AI & Machine Learning</h4>
+              <p className="leading-relaxed text-sm">
                 Hands-on experience with AI/ML frameworks including TensorFlow and PyTorch. 
                 Specialized in building RAG applications, integrating LLMs, and implementing 
                 intelligent chatbots using LangChain and vector databases.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-foreground mb-3">DevOps & Cloud</h4>
-              <p className="leading-relaxed">
+              <h4 className="font-medium text-foreground mb-3 tracking-wide">DevOps & Cloud</h4>
+              <p className="leading-relaxed text-sm">
                 Familiar with containerization using Docker, CI/CD pipelines, and cloud 
                 platforms like AWS. Strong command of Git version control and Linux 
                 environments for development and deployment.

@@ -38,7 +38,7 @@ const AboutSection = () => {
         >
           <span className="text-primary text-sm font-semibold uppercase tracking-widest">About Me</span>
           <h2 className="font-heading text-4xl sm:text-5xl font-bold mt-4 mb-6">
-            Passionate Developer &{' '}
+            Aspiring Pentester &{' '}
             <span className="gradient-text">Tech Enthusiast</span>
           </h2>
           <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full" />
@@ -54,19 +54,19 @@ const AboutSection = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <p className="text-lg text-muted-foreground leading-relaxed">
-              I'm <span className="text-foreground font-semibold">TAMILSELVAN P</span>, a passionate 
-              full-stack developer with a deep interest in building intelligent web applications 
+              I'm <span className="text-foreground font-semibold">TAMILSELVAN P</span>, A Third Year Computer
+              Science Student Pursuing at Annai Mira College of Engineering and Technology
+            </p>
+            
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              An Aspiring Penetration Tester  with a deep interest in building intelligent web applications 
               that make a real impact.
             </p>
+            
             <p className="text-lg text-muted-foreground leading-relaxed">
-              My journey in technology spans across various domains including web development, 
-              artificial intelligence, and cloud computing. I thrive on creating seamless user 
+               My journey in technology spans across various domains including web development, 
+              artificial intelligence, and Cyber Security. I thrive on creating seamless user 
               experiences backed by robust, scalable architectures.
-            </p>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              When I'm not coding, you'll find me exploring new technologies, contributing to 
-              open-source projects, or diving deep into the latest advancements in AI and 
-              machine learning.
             </p>
 
             {/* Quick Stats */}

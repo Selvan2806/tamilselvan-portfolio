@@ -60,7 +60,55 @@ const FloatingChatbot = () => {
         Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
       },
       body: JSON.stringify({
-        messages: userMessages.map(m => ({ role: m.role, content: m.content }))
+        messages: [
+          {
+            role: "system",
+            content: `I am Selvan's AI Assistant, what kind of help do you need!. You ONLY answer questions about TAMILSELVAN P and information from this website. If asked about anything else, politely redirect the conversation back to TAMILSELVAN P.
+
+## QUICK ANSWERS (Give ONLY the direct answer when asked)
+- Name: TAMILSELVAN P
+- Phone/Number/Mobile: +91 7806860579
+- Email: Selvanaptamil@gmail.com
+- Location: India
+- Role/Title: Full-Stack Developer & AI Enthusiast
+- Projects count: 5+
+- Technologies count: 10+
+- College: Annai Mira College of Engineering and Technology
+- Degree: Bachelor of Engineering in Computer Science
+- Year: 3rd year (2023 - Present)
+- GitHub: https://github.com/Selvan2806
+- LinkedIn: https://www.linkedin.com/in/tamilselvan-p-56134130a/
+- Twitter: https://x.com/SELVANTAMIL2006
+- Availability: Available for opportunities
+- Father name: PALANI S
+- Mother name: MANONMANI P
+- Brother name: PORSEZHIYAN P
+- Dob/Date of birth: 28 Jan 2006
+
+## TECHNICAL SKILLS
+- Languages: Python, JavaScript, Java, SQL
+- Frontend: React, Tailwind CSS
+- Backend: Node.js, MongoDB
+- AI/ML: LangChain
+- Tools: Git, Linux
+
+IMPORTANT SKILL RULES:
+1. NEVER mention skills not listed above (do not say "etc", "and others", or "various").
+2. NEVER use percentages (e.g., "90%"). Use terms like "Expert", "Proficient", or "Advanced".
+3. If asked about a skill he doesn't have, politely say he doesn't have that specific skill listed but is always learning.
+
+## FEATURED PROJECTS
+1. Viva Preparation Assistant
+2. Logo Maker
+3. Mental Health Assistant
+
+RESPONSE RULES:
+1. BE CONCISE - Give only what's asked.
+2. Only answer about TAMILSELVAN P.
+3. When asked about projects, ONLY list the project titles. Do NOT provide descriptions, summaries, or links.`
+          },
+          ...userMessages.map(m => ({ role: m.role, content: m.content }))
+        ]
       }),
     });
 
@@ -111,7 +159,7 @@ const FloatingChatbot = () => {
             setMessages(prev => {
               const last = prev[prev.length - 1];
               if (last?.role === "assistant" && last.id !== "1") {
-                return prev.map((m, i) => 
+                return prev.map((m, i) =>
                   i === prev.length - 1 ? { ...m, content: assistantContent } : m
                 );
               }
@@ -170,9 +218,8 @@ const FloatingChatbot = () => {
       {/* Floating Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-r from-primary to-[hsl(190_80%_45%)] text-primary-foreground shadow-lg hover:shadow-[0_0_30px_hsla(174,72%,56%,0.5)] transition-all duration-300 flex items-center justify-center ${
-          isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100'
-        }`}
+        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-r from-primary to-[hsl(190_80%_45%)] text-primary-foreground shadow-lg hover:shadow-[0_0_30px_hsla(174,72%,56%,0.5)] transition-all duration-300 flex items-center justify-center ${isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100'
+          }`}
       >
         <MessageCircle className="w-6 h-6" />
         <span className="absolute -top-1 -right-1 w-4 h-4 bg-accent rounded-full flex items-center justify-center">
@@ -182,11 +229,10 @@ const FloatingChatbot = () => {
 
       {/* Chat Window */}
       <div
-        className={`fixed bottom-6 right-6 z-50 w-[380px] max-w-[calc(100vw-3rem)] transition-all duration-300 ${
-          isOpen
-            ? 'opacity-100 translate-y-0 scale-100'
-            : 'opacity-0 translate-y-4 scale-95 pointer-events-none'
-        }`}
+        className={`fixed bottom-6 right-6 z-50 w-[380px] max-w-[calc(100vw-3rem)] transition-all duration-300 ${isOpen
+          ? 'opacity-100 translate-y-0 scale-100'
+          : 'opacity-0 translate-y-4 scale-95 pointer-events-none'
+          }`}
       >
         <div className="glass-card overflow-hidden shadow-2xl border border-border">
           {/* Chat Header */}
@@ -216,11 +262,10 @@ const FloatingChatbot = () => {
                 className={`flex gap-2 ${message.role === 'user' ? 'flex-row-reverse' : ''}`}
               >
                 <div
-                  className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 ${
-                    message.role === 'user'
-                      ? 'bg-primary'
-                      : 'bg-gradient-to-br from-primary to-accent'
-                  }`}
+                  className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 ${message.role === 'user'
+                    ? 'bg-primary'
+                    : 'bg-gradient-to-br from-primary to-accent'
+                    }`}
                 >
                   {message.role === 'user' ? (
                     <User className="w-3.5 h-3.5 text-primary-foreground" />
@@ -229,11 +274,10 @@ const FloatingChatbot = () => {
                   )}
                 </div>
                 <div
-                  className={`max-w-[75%] p-3 rounded-2xl text-sm ${
-                    message.role === 'user'
-                      ? 'bg-primary text-primary-foreground rounded-br-md'
-                      : 'bg-secondary text-secondary-foreground rounded-bl-md'
-                  }`}
+                  className={`max-w-[75%] p-3 rounded-2xl text-sm ${message.role === 'user'
+                    ? 'bg-primary text-primary-foreground rounded-br-md'
+                    : 'bg-secondary text-secondary-foreground rounded-bl-md'
+                    }`}
                 >
                   <p className="whitespace-pre-line leading-relaxed">{message.content}</p>
                 </div>

@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, User, Code, Folder, Award, Briefcase, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { ExpandableTabs } from '@/components/ui/expandable-tabs';
 
-const navLinks = [
-  { href: '#about', label: 'About' },
-  { href: '#skills', label: 'Skills' },
-  { href: '#projects', label: 'Projects' },
-  { href: '#certifications', label: 'Certifications' },
-  { href: '#experience', label: 'Experience' },
-  { href: '#contact', label: 'Contact' },
+const navTabs = [
+  { title: "About", icon: User, href: '#about' },
+  { title: "Skills", icon: Code, href: '#skills' },
+  { title: "Projects", icon: Folder, href: '#projects' },
+  { title: "Certifications", icon: Award, href: '#certifications' },
+  { title: "Experience", icon: Briefcase, href: '#experience' },
+  { type: "separator" as const },
+  { title: "Contact", icon: Mail, href: '#contact' },
 ];
 
 const Navigation = () => {
@@ -22,6 +24,18 @@ const Navigation = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleTabChange = (index: number | null) => {
+    if (index !== null) {
+      const tab = navTabs[index];
+      if (tab.href) {
+        const element = document.querySelector(tab.href);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    }
+  };
 
   return (
     <nav
@@ -39,17 +53,15 @@ const Navigation = () => {
         </a>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-1">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/50"
-            >
-              {link.label}
-            </a>
-          ))}
-          <Button variant="hero" size="sm" className="ml-4" asChild>
+        <div className="hidden md:flex items-center gap-4">
+          <ExpandableTabs
+            tabs={navTabs}
+            onChange={handleTabChange}
+            className="border-primary/20 bg-background/50 backdrop-blur-sm shadow-[0_0_15px_rgba(0,242,255,0.1)]"
+            activeColor="text-primary"
+          />
+
+          <Button variant="hero" size="sm" className="ml-2" asChild>
             <a href="#contact">Hire Me</a>
           </Button>
         </div>
@@ -69,16 +81,20 @@ const Navigation = () => {
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-xl border-b border-border/50 py-4 animate-fade-in">
           <div className="section-container flex flex-col gap-2">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/50"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {link.label}
-              </a>
-            ))}
+            {navTabs.map((tab, index) => {
+              if (tab.type === "separator") return null;
+              return (
+                <a
+                  key={tab.title}
+                  href={tab.href}
+                  className="px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/50 flex items-center gap-3"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <tab.icon className="w-5 h-5" />
+                  {tab.title}
+                </a>
+              );
+            })}
             <Button variant="hero" className="mt-2" asChild>
               <a href="#contact" onClick={() => setIsMobileMenuOpen(false)}>Hire Me</a>
             </Button>

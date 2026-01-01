@@ -6,6 +6,7 @@ const navLinks = [
   { href: '#about', label: 'About' },
   { href: '#skills', label: 'Skills' },
   { href: '#projects', label: 'Projects' },
+  { href: '#certifications', label: 'Certifications' },
   { href: '#experience', label: 'Experience' },
   { href: '#contact', label: 'Contact' },
 ];
@@ -24,16 +25,15 @@ const Navigation = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-background/80 backdrop-blur-xl border-b border-border/50 py-3'
-          : 'bg-transparent py-5'
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
+        ? 'bg-background/60 backdrop-blur-md border-b border-white/10 py-3 shadow-[0_0_20px_rgba(0,242,255,0.15)]'
+        : 'bg-transparent py-5'
+        }`}
     >
       <div className="section-container flex items-center justify-between">
         <a
           href="#"
-          className="font-heading text-xl font-bold gradient-text"
+          className="font-heading text-xl font-bold gradient-text drop-shadow-[0_0_10px_rgba(0,242,255,0.5)]"
         >
           TAMILSELVAN
         </a>

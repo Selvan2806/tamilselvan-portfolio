@@ -4,6 +4,7 @@ import HeroSection from '@/components/HeroSection';
 import AboutSection from '@/components/AboutSection';
 import SkillsSection from '@/components/SkillsSection';
 import ProjectsSection from '@/components/ProjectsSection';
+import CertificationsSection from '@/components/CertificationsSection';
 import ExperienceSection from '@/components/ExperienceSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
@@ -14,9 +15,9 @@ const Index = () => {
     <>
       <Helmet>
         <title>TAMILSELVAN P | Full-Stack Developer & AI Enthusiast</title>
-        <meta 
-          name="description" 
-          content="TAMILSELVAN P - Full-Stack Developer specializing in React, Node.js, Python, and AI/ML. Building intelligent web applications with modern technologies." 
+        <meta
+          name="description"
+          content="TAMILSELVAN P - Full-Stack Developer specializing in React, Node.js, Python, and AI/ML. Building intelligent web applications with modern technologies."
         />
         <meta name="keywords" content="TAMILSELVAN P, Full Stack Developer, React, Node.js, Python, AI, Machine Learning, Web Developer, Portfolio" />
         <meta property="og:title" content="TAMILSELVAN P | Full-Stack Developer & AI Enthusiast" />
@@ -24,7 +25,7 @@ const Index = () => {
         <meta property="og:type" content="website" />
         <link rel="canonical" href="/" />
       </Helmet>
-      
+
       <div className="min-h-screen bg-background">
         <Navigation />
         <main>
@@ -32,6 +33,7 @@ const Index = () => {
           <AboutSection />
           <SkillsSection />
           <ProjectsSection />
+          <CertificationsSection />
           <ExperienceSection />
           <ContactSection />
         </main>

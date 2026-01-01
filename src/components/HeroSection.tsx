@@ -7,36 +7,26 @@ const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       {/* Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '2s' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl" />
-      </div>
+      <div className="absolute inset-0 bg-background z-0" />
+      <div className="absolute inset-0 cyber-grid z-0" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background z-0" />
 
-      {/* Grid Pattern */}
-      <div 
-        className="absolute inset-0 opacity-[0.02]"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
-          `,
-          backgroundSize: '50px 50px'
-        }}
-      />
+      {/* Glow Orbs */}
+      <div className="absolute top-20 right-20 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse-slow z-0" />
+      <div className="absolute bottom-20 left-20 w-72 h-72 bg-secondary/20 rounded-full blur-3xl animate-pulse-slow z-0" />
 
       <div className="section-container relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
           {/* Profile Picture */}
-          <motion.div 
+          <motion.div
             className="relative"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
             <div className="w-64 h-64 sm:w-72 sm:h-72 lg:w-80 lg:h-80 rounded-full overflow-hidden border-4 border-primary/30 shadow-2xl relative z-10">
-              <img 
-                src={profilePhoto} 
+              <img
+                src={profilePhoto}
                 alt="TAMILSELVAN P - Full Stack Developer"
                 className="w-full h-full object-cover"
               />
@@ -52,7 +42,7 @@ const HeroSection = () => {
           {/* Content */}
           <div className="text-center lg:text-left space-y-6 flex-1">
             {/* Status Badge */}
-            <motion.div 
+            <motion.div
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -66,7 +56,7 @@ const HeroSection = () => {
             </motion.div>
 
             {/* Main Heading */}
-            <motion.h1 
+            <motion.h1
               className="font-heading text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -77,7 +67,7 @@ const HeroSection = () => {
             </motion.h1>
 
             {/* Subtitle */}
-            <motion.p 
+            <motion.p
               className="text-xl sm:text-2xl lg:text-3xl text-muted-foreground font-light"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -87,18 +77,18 @@ const HeroSection = () => {
             </motion.p>
 
             {/* Description */}
-            <motion.p 
+            <motion.p
               className="text-base sm:text-lg text-muted-foreground max-w-xl leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              Building intelligent, scalable web applications with modern technologies and 
+              Building intelligent, scalable web applications with modern technologies and
               Passionate about exploring vulnerablities in Machines.
             </motion.p>
 
             {/* CTA Buttons */}
-            <motion.div 
+            <motion.div
               className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -107,9 +97,9 @@ const HeroSection = () => {
               <Button variant="hero" size="xl" asChild>
                 <a href="#projects">View My Work</a>
               </Button>
-              <Button 
-                variant="hero-outline" 
-                size="xl" 
+              <Button
+                variant="hero-outline"
+                size="xl"
                 onClick={() => window.dispatchEvent(new CustomEvent('open-chatbot'))}
               >
                 Chat with Assistant
@@ -117,7 +107,7 @@ const HeroSection = () => {
             </motion.div>
 
             {/* Social Links */}
-            <motion.div 
+            <motion.div
               className="flex items-center justify-center lg:justify-start gap-4 pt-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -150,7 +140,7 @@ const HeroSection = () => {
         </div>
 
         {/* Scroll Indicator */}
-        <motion.div 
+        <motion.div
           className="absolute bottom-8 left-1/2 -translate-x-1/2"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

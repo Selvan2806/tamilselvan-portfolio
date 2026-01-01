@@ -24,7 +24,7 @@ const FloatingChatbot = () => {
     {
       id: '1',
       role: 'assistant',
-      content: `👋 Hi! I'm an AI assistant. Ask me anything about **TAMILSELVAN P** - his skills, projects, experience, or how to get in touch!`,
+      content: `👋 Hi! I'm an Selvan's AI assistant. What can I do for you?`,
     },
   ]);
   const [input, setInput] = useState('');

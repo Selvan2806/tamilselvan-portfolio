@@ -13,23 +13,13 @@ interface Skill {
 const skills: Skill[] = [
   { name: 'Python', category: ['languages', 'ai', 'backend'], level: 5 },
   { name: 'JavaScript', category: ['languages', 'frontend'], level: 5 },
-  { name: 'TypeScript', category: ['languages', 'frontend'], level: 4 },
-  { name: 'Java', category: ['languages', 'backend'], level: 4 },
   { name: 'SQL', category: ['languages', 'backend'], level: 4 },
   { name: 'React', category: ['frontend'], level: 5 },
-  { name: 'Next.js', category: ['frontend'], level: 4 },
   { name: 'Tailwind CSS', category: ['frontend'], level: 5 },
   { name: 'Node.js', category: ['backend'], level: 4 },
-  { name: 'Express.js', category: ['backend'], level: 4 },
-  { name: 'FastAPI', category: ['backend', 'ai'], level: 4 },
-  { name: 'PostgreSQL', category: ['backend'], level: 4 },
   { name: 'MongoDB', category: ['backend'], level: 4 },
-  { name: 'TensorFlow', category: ['ai'], level: 4 },
-  { name: 'PyTorch', category: ['ai'], level: 4 },
   { name: 'LangChain', category: ['ai'], level: 4 },
-  { name: 'Docker', category: ['tools'], level: 4 },
   { name: 'Git', category: ['tools'], level: 5 },
-  { name: 'AWS', category: ['tools'], level: 4 },
   { name: 'Linux', category: ['tools'], level: 4 },
 ];
 

@@ -6,7 +6,7 @@ const corsHeaders = {
 };
 
 const PORTFOLIO_KNOWLEDGE = `
-I am Selvan's AI Assistant, what kind of help do you need?. You ONLY answer questions about TAMILSELVAN P and information from this website. If asked about anything else, politely redirect the conversation back to TAMILSELVAN P.
+I am Selvan's AI Assistant, what kind of help do you need!. You ONLY answer questions about TAMILSELVAN P and information from this website. If asked about anything else, politely redirect the conversation back to TAMILSELVAN P.
 
 ## QUICK ANSWERS (Give ONLY the direct answer when asked)
 - Name: TAMILSELVAN P

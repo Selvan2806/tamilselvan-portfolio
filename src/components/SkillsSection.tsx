@@ -42,7 +42,7 @@ const categories = [
   { id: 'tools', label: 'Tools' },
 ];
 
-const StarRating = ({ level, index }: { level: number; index: number }) => {
+const StarRating = ({ level, index, isHovered }: { level: number; index: number; isHovered: boolean }) => {
   return (
     <div className="flex gap-0.5">
       {[1, 2, 3, 4, 5].map((star) => (
@@ -52,17 +52,41 @@ const StarRating = ({ level, index }: { level: number; index: number }) => {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.3, delay: 0.05 * index + 0.1 * star }}
+          animate={isHovered && star <= level ? { scale: [1, 1.2, 1] } : {}}
         >
           <Star
-            className={`w-4 h-4 ${
+            className={`w-4 h-4 transition-all duration-300 ${
               star <= level
-                ? 'fill-primary text-primary'
+                ? `fill-primary text-primary ${isHovered ? 'drop-shadow-[0_0_6px_hsl(var(--primary))]' : ''}`
                 : 'fill-transparent text-muted-foreground/30'
             }`}
           />
         </motion.div>
       ))}
     </div>
+  );
+};
+
+const SkillCard = ({ skill, index }: { skill: Skill; index: number }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  
+  return (
+    <motion.div
+      className="glass-card p-5 hover:border-primary/30 transition-all duration-300 group cursor-pointer"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4, delay: 0.05 * index }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="flex items-center justify-between">
+        <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
+          {skill.name}
+        </h3>
+        <StarRating level={skill.level} index={index} isHovered={isHovered} />
+      </div>
+    </motion.div>
   );
 };
 
@@ -124,21 +148,7 @@ const SkillsSection = () => {
           transition={{ duration: 0.5, delay: 0.3 }}
         >
           {filteredSkills.map((skill, index) => (
-            <motion.div
-              key={skill.name}
-              className="glass-card p-5 hover:border-primary/30 transition-all duration-300 group"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.05 * index }}
-            >
-              <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
-                  {skill.name}
-                </h3>
-                <StarRating level={skill.level} index={index} />
-              </div>
-            </motion.div>
+            <SkillCard key={skill.name} skill={skill} index={index} />
           ))}
         </motion.div>
 

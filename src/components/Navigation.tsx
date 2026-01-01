@@ -24,16 +24,16 @@ const Navigation = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-background/90 backdrop-blur-2xl border-b border-primary/10 py-3'
+          ? 'bg-background/80 backdrop-blur-xl border-b border-border/50 py-3'
           : 'bg-transparent py-5'
       }`}
     >
       <div className="section-container flex items-center justify-between">
         <a
           href="#"
-          className="font-heading text-2xl font-semibold gradient-text tracking-wide"
+          className="font-heading text-xl font-bold gradient-text"
         >
           TAMILSELVAN
         </a>
@@ -44,12 +44,12 @@ const Navigation = () => {
             <a
               key={link.href}
               href={link.href}
-              className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-300 tracking-wide uppercase"
+              className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/50"
             >
               {link.label}
             </a>
           ))}
-          <Button variant="hero" size="sm" className="ml-6" asChild>
+          <Button variant="hero" size="sm" className="ml-4" asChild>
             <a href="#contact">Hire Me</a>
           </Button>
         </div>
@@ -67,19 +67,19 @@ const Navigation = () => {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-2xl border-b border-primary/10 py-6 animate-fade-in">
-          <div className="section-container flex flex-col gap-1">
+        <div className="md:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-xl border-b border-border/50 py-4 animate-fade-in">
+          <div className="section-container flex flex-col gap-2">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="px-4 py-3 text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-300 tracking-wide uppercase"
+                className="px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/50"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {link.label}
               </a>
             ))}
-            <Button variant="hero" className="mt-4" asChild>
+            <Button variant="hero" className="mt-2" asChild>
               <a href="#contact" onClick={() => setIsMobileMenuOpen(false)}>Hire Me</a>
             </Button>
           </div>

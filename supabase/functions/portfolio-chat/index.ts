@@ -5,6 +5,95 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// Rate limiting: track requests per IP
+const rateLimits = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT_MAX = 20; // Max requests per window
+const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute window
+
+// Input validation constants
+const MAX_MESSAGES = 20;
+const MAX_MESSAGE_LENGTH = 2000;
+const VALID_ROLES = ["user", "assistant", "system"];
+
+interface ChatMessage {
+  role: string;
+  content: string;
+}
+
+function validateMessages(messages: unknown): { valid: boolean; error?: string; messages?: ChatMessage[] } {
+  if (!Array.isArray(messages)) {
+    return { valid: false, error: "Messages must be an array" };
+  }
+
+  if (messages.length === 0) {
+    return { valid: false, error: "Messages array cannot be empty" };
+  }
+
+  if (messages.length > MAX_MESSAGES) {
+    return { valid: false, error: `Maximum ${MAX_MESSAGES} messages allowed` };
+  }
+
+  const validatedMessages: ChatMessage[] = [];
+
+  for (let i = 0; i < messages.length; i++) {
+    const msg = messages[i];
+    
+    if (!msg || typeof msg !== "object") {
+      return { valid: false, error: `Message at index ${i} is invalid` };
+    }
+
+    const { role, content } = msg as { role?: unknown; content?: unknown };
+
+    if (typeof role !== "string" || !VALID_ROLES.includes(role)) {
+      return { valid: false, error: `Invalid role at index ${i}` };
+    }
+
+    if (typeof content !== "string") {
+      return { valid: false, error: `Content at index ${i} must be a string` };
+    }
+
+    if (content.length === 0) {
+      return { valid: false, error: `Content at index ${i} cannot be empty` };
+    }
+
+    if (content.length > MAX_MESSAGE_LENGTH) {
+      return { valid: false, error: `Content at index ${i} exceeds ${MAX_MESSAGE_LENGTH} characters` };
+    }
+
+    validatedMessages.push({ role, content: content.trim() });
+  }
+
+  return { valid: true, messages: validatedMessages };
+}
+
+function checkRateLimit(clientIP: string): { allowed: boolean; retryAfter?: number } {
+  const now = Date.now();
+  const record = rateLimits.get(clientIP);
+
+  // Clean up expired entries periodically
+  if (rateLimits.size > 10000) {
+    for (const [ip, data] of rateLimits.entries()) {
+      if (data.resetAt < now) {
+        rateLimits.delete(ip);
+      }
+    }
+  }
+
+  if (!record || record.resetAt < now) {
+    // New window
+    rateLimits.set(clientIP, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return { allowed: true };
+  }
+
+  if (record.count >= RATE_LIMIT_MAX) {
+    const retryAfter = Math.ceil((record.resetAt - now) / 1000);
+    return { allowed: false, retryAfter };
+  }
+
+  record.count++;
+  return { allowed: true };
+}
+
 const PORTFOLIO_KNOWLEDGE = `
 I am Selvan's AI Assistant, what kind of help do you need!. You ONLY answer questions about TAMILSELVAN P and information from this website. If asked about anything else, politely redirect the conversation back to TAMILSELVAN P.
 
@@ -77,15 +166,65 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  // Get client IP for rate limiting
+  const clientIP = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || 
+                   req.headers.get("x-real-ip") || 
+                   "unknown";
+
+  // Check rate limit
+  const rateLimitCheck = checkRateLimit(clientIP);
+  if (!rateLimitCheck.allowed) {
+    console.log(`Rate limit exceeded for IP: ${clientIP}`);
+    return new Response(
+      JSON.stringify({ error: "Too many requests. Please try again later." }),
+      {
+        status: 429,
+        headers: { 
+          ...corsHeaders, 
+          "Content-Type": "application/json",
+          "Retry-After": String(rateLimitCheck.retryAfter || 60)
+        },
+      }
+    );
+  }
+
   try {
-    const { messages } = await req.json();
+    let requestBody: unknown;
+    try {
+      requestBody = await req.json();
+    } catch {
+      return new Response(
+        JSON.stringify({ error: "Invalid JSON in request body" }),
+        {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
+    }
+
+    // Validate input
+    const { messages: rawMessages } = requestBody as { messages?: unknown };
+    const validation = validateMessages(rawMessages);
+    
+    if (!validation.valid) {
+      console.log(`Validation failed: ${validation.error}`);
+      return new Response(
+        JSON.stringify({ error: validation.error }),
+        {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
+    }
+
+    const messages = validation.messages!;
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
 
     if (!LOVABLE_API_KEY) {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    console.log("Processing chat request with", messages.length, "messages");
+    console.log(`Processing chat request with ${messages.length} messages from IP: ${clientIP}`);
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",

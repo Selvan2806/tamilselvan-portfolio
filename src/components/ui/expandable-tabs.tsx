@@ -9,16 +9,19 @@ import { LucideIcon } from "lucide-react";
 interface Tab {
     title: string;
     icon: LucideIcon;
-    type?: never;
+    href?: string;
+    type?: undefined;
 }
 
 interface Separator {
     type: "separator";
-    title?: never;
-    icon?: never;
 }
 
-type TabItem = Tab | Separator;
+export type TabItem = Tab | Separator;
+
+function isTab(item: TabItem): item is Tab {
+    return item.type !== "separator";
+}
 
 interface ExpandableTabsProps {
     tabs: TabItem[];
@@ -84,10 +87,11 @@ export function ExpandableTabs({
                     return <Separator key={`separator-${index}`} />;
                 }
 
-                const Icon = tab.icon;
+                const tabItem = tab as Tab;
+                const Icon = tabItem.icon;
                 return (
                     <motion.button
-                        key={tab.title}
+                        key={tabItem.title}
                         variants={buttonVariants}
                         initial={false}
                         animate="animate"
@@ -112,7 +116,7 @@ export function ExpandableTabs({
                                     transition={transition}
                                     className="overflow-hidden whitespace-nowrap"
                                 >
-                                    {tab.title}
+                                    {tabItem.title}
                                 </motion.span>
                             )}
                         </AnimatePresence>

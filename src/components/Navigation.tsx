@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Menu, X, User, Code, Folder, Award, Briefcase, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { ExpandableTabs } from '@/components/ui/expandable-tabs';
+import { ExpandableTabs, TabItem } from '@/components/ui/expandable-tabs';
 
-const navTabs = [
+const navTabs: TabItem[] = [
   { title: "About", icon: User, href: '#about' },
   { title: "Skills", icon: Code, href: '#skills' },
   { title: "Projects", icon: Folder, href: '#projects' },
   { title: "Certifications", icon: Award, href: '#certifications' },
   { title: "Experience", icon: Briefcase, href: '#experience' },
-  { type: "separator" as const },
+  { type: "separator" },
   { title: "Contact", icon: Mail, href: '#contact' },
 ];
 
@@ -28,10 +28,13 @@ const Navigation = () => {
   const handleTabChange = (index: number | null) => {
     if (index !== null) {
       const tab = navTabs[index];
-      if (tab.href) {
-        const element = document.querySelector(tab.href);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
+      if (tab.type !== "separator") {
+        const navTab = tab as { href?: string };
+        if (navTab.href) {
+          const element = document.querySelector(navTab.href);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
         }
       }
     }
@@ -83,15 +86,16 @@ const Navigation = () => {
           <div className="section-container flex flex-col gap-2">
             {navTabs.map((tab, index) => {
               if (tab.type === "separator") return null;
+              const navTab = tab as { title: string; icon: React.ComponentType<{ className?: string }>; href: string };
               return (
                 <a
-                  key={tab.title}
-                  href={tab.href}
+                  key={navTab.title}
+                  href={navTab.href}
                   className="px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/50 flex items-center gap-3"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <tab.icon className="w-5 h-5" />
-                  {tab.title}
+                  <navTab.icon className="w-5 h-5" />
+                  {navTab.title}
                 </a>
               );
             })}

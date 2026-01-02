@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
@@ -12,6 +14,9 @@ const Footer = () => {
             © {currentYear} All rights reserved. Built with passion.
           </p>
           <div className="flex items-center gap-4">
+            <Link to="/admin" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+              Admin
+            </Link>
             <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
               Privacy
             </a>

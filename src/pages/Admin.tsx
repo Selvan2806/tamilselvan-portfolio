@@ -27,6 +27,7 @@ const Admin = () => {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
+  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -50,11 +51,41 @@ const Admin = () => {
     return () => subscription.unsubscribe();
   }, [navigate]);
 
+  // Check if user has admin role
   useEffect(() => {
+    const checkAdminStatus = async () => {
+      if (!user) return;
+      
+      const { data, error } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", user.id)
+        .eq("role", "admin")
+        .maybeSingle();
+      
+      if (error || !data) {
+        setIsAdmin(false);
+        toast({
+          title: "Access Denied",
+          description: "You don't have admin privileges",
+          variant: "destructive",
+        });
+        navigate("/");
+      } else {
+        setIsAdmin(true);
+      }
+    };
+    
     if (user) {
+      checkAdminStatus();
+    }
+  }, [user, navigate, toast]);
+
+  useEffect(() => {
+    if (user && isAdmin) {
       fetchSubmissions();
     }
-  }, [user]);
+  }, [user, isAdmin]);
 
   const fetchSubmissions = async () => {
     setLoading(true);
@@ -80,7 +111,15 @@ const Admin = () => {
     navigate("/");
   };
 
-  if (!user) {
+  if (!user || isAdmin === null) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <RefreshCw className="w-6 h-6 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!isAdmin) {
     return null;
   }
 

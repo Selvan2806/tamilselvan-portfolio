@@ -2,6 +2,3 @@ project_id = "fnmrcuovmhcxubhgyhjp"
 
 [functions.portfolio-chat]
 verify_jwt = false
-
-[functions.realtime-token]
-verify_jwt = false

@@ -1,8 +1,7 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
-import { Send, Bot, User, Sparkles, Loader2, X, MessageCircle, Mic, MicOff, Volume2 } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Send, Bot, User, Sparkles, Loader2, X, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { supabase } from '@/integrations/supabase/client';
 
 interface Message {
   id: string;
@@ -31,14 +30,6 @@ const FloatingChatbot = () => {
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  
-  // Voice state
-  const [isVoiceMode, setIsVoiceMode] = useState(false);
-  const [isConnecting, setIsConnecting] = useState(false);
-  const [isSpeaking, setIsSpeaking] = useState(false);
-  const pcRef = useRef<RTCPeerConnection | null>(null);
-  const dcRef = useRef<RTCDataChannel | null>(null);
-  const audioElRef = useRef<HTMLAudioElement | null>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -53,13 +44,6 @@ const FloatingChatbot = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-
-  // Cleanup voice connection on unmount
-  useEffect(() => {
-    return () => {
-      disconnectVoice();
-    };
-  }, []);
 
   const handleResumeDownload = (content: string) => {
     const lowerContent = content.toLowerCase();
@@ -229,171 +213,6 @@ RESPONSE RULES:
     setInput(question);
   };
 
-  // Voice Functions
-  const connectVoice = useCallback(async () => {
-    setIsConnecting(true);
-    
-    try {
-      // Request microphone permission
-      await navigator.mediaDevices.getUserMedia({ audio: true });
-      
-      // Get ephemeral token from edge function
-      const { data, error } = await supabase.functions.invoke("realtime-token");
-      
-      if (error) {
-        console.error("Error getting token:", error);
-        throw new Error("Failed to get voice session token");
-      }
-      
-      if (!data?.client_secret?.value) {
-        console.error("Invalid token response:", data);
-        throw new Error("Invalid token received");
-      }
-
-      const EPHEMERAL_KEY = data.client_secret.value;
-      console.log("Got ephemeral token, connecting...");
-
-      // Create peer connection
-      const pc = new RTCPeerConnection();
-      pcRef.current = pc;
-
-      // Create audio element for remote audio
-      const audioEl = document.createElement("audio");
-      audioEl.autoplay = true;
-      audioElRef.current = audioEl;
-
-      // Set up remote audio
-      pc.ontrack = (e) => {
-        console.log("Received remote track");
-        audioEl.srcObject = e.streams[0];
-      };
-
-      // Add local audio track
-      const ms = await navigator.mediaDevices.getUserMedia({ 
-        audio: {
-          echoCancellation: true,
-          noiseSuppression: true,
-          autoGainControl: true
-        } 
-      });
-      pc.addTrack(ms.getTracks()[0]);
-
-      // Set up data channel for events
-      const dc = pc.createDataChannel("oai-events");
-      dcRef.current = dc;
-
-      dc.addEventListener("open", () => {
-        console.log("Data channel opened");
-        setIsVoiceMode(true);
-        setIsConnecting(false);
-        toast.success("Voice mode activated! Start speaking.");
-      });
-
-      dc.addEventListener("message", (e) => {
-        try {
-          const event = JSON.parse(e.data);
-          console.log("Received event:", event.type);
-          
-          // Handle different event types
-          if (event.type === 'response.audio.delta') {
-            setIsSpeaking(true);
-          } else if (event.type === 'response.audio.done') {
-            setIsSpeaking(false);
-          } else if (event.type === 'conversation.item.input_audio_transcription.completed') {
-            // User speech transcription
-            const transcript = event.transcript;
-            if (transcript) {
-              setMessages(prev => [...prev, {
-                id: Date.now().toString(),
-                role: 'user',
-                content: transcript
-              }]);
-            }
-          } else if (event.type === 'response.audio_transcript.done') {
-            // Assistant response transcription
-            const transcript = event.transcript;
-            if (transcript) {
-              setMessages(prev => [...prev, {
-                id: Date.now().toString(),
-                role: 'assistant',
-                content: transcript
-              }]);
-            }
-          }
-        } catch (err) {
-          console.error("Error parsing event:", err);
-        }
-      });
-
-      dc.addEventListener("close", () => {
-        console.log("Data channel closed");
-        setIsVoiceMode(false);
-        setIsSpeaking(false);
-      });
-
-      // Create and set local description
-      const offer = await pc.createOffer();
-      await pc.setLocalDescription(offer);
-
-      // Connect to OpenAI's Realtime API
-      const baseUrl = "https://api.openai.com/v1/realtime";
-      const model = "gpt-4o-realtime-preview-2024-12-17";
-      const sdpResponse = await fetch(`${baseUrl}?model=${model}`, {
-        method: "POST",
-        body: offer.sdp,
-        headers: {
-          Authorization: `Bearer ${EPHEMERAL_KEY}`,
-          "Content-Type": "application/sdp"
-        },
-      });
-
-      if (!sdpResponse.ok) {
-        throw new Error("Failed to connect to OpenAI Realtime API");
-      }
-
-      const answer = {
-        type: "answer" as RTCSdpType,
-        sdp: await sdpResponse.text(),
-      };
-      
-      await pc.setRemoteDescription(answer);
-      console.log("WebRTC connection established");
-
-    } catch (error) {
-      console.error("Error connecting voice:", error);
-      toast.error(error instanceof Error ? error.message : "Failed to connect voice");
-      setIsConnecting(false);
-      disconnectVoice();
-    }
-  }, []);
-
-  const disconnectVoice = useCallback(() => {
-    if (dcRef.current) {
-      dcRef.current.close();
-      dcRef.current = null;
-    }
-    if (pcRef.current) {
-      pcRef.current.close();
-      pcRef.current = null;
-    }
-    if (audioElRef.current) {
-      audioElRef.current.srcObject = null;
-      audioElRef.current = null;
-    }
-    setIsVoiceMode(false);
-    setIsSpeaking(false);
-    setIsConnecting(false);
-  }, []);
-
-  const toggleVoice = useCallback(() => {
-    if (isVoiceMode) {
-      disconnectVoice();
-      toast.info("Voice mode deactivated");
-    } else {
-      connectVoice();
-    }
-  }, [isVoiceMode, connectVoice, disconnectVoice]);
-
   return (
     <>
       {/* Floating Button */}
@@ -419,60 +238,21 @@ RESPONSE RULES:
           {/* Chat Header */}
           <div className="bg-gradient-to-r from-primary/20 to-accent/20 px-4 py-3 border-b border-border flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className={`w-9 h-9 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center ${isSpeaking ? 'animate-pulse' : ''}`}>
-                {isSpeaking ? (
-                  <Volume2 className="w-4 h-4 text-primary-foreground" />
-                ) : (
-                  <Sparkles className="w-4 h-4 text-primary-foreground" />
-                )}
+              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+                <Sparkles className="w-4 h-4 text-primary-foreground" />
               </div>
               <div>
                 <h3 className="font-semibold text-sm text-foreground">Ask About Me</h3>
-                <p className="text-xs text-muted-foreground">
-                  {isVoiceMode ? 'Voice mode active' : 'AI-powered assistant'}
-                </p>
+                <p className="text-xs text-muted-foreground">AI-powered assistant</p>
               </div>
             </div>
-            <div className="flex items-center gap-1">
-              <button
-                onClick={toggleVoice}
-                disabled={isConnecting}
-                className={`p-1.5 rounded-lg transition-colors ${
-                  isVoiceMode 
-                    ? 'bg-primary/20 text-primary' 
-                    : 'hover:bg-secondary/50 text-muted-foreground'
-                }`}
-                title={isVoiceMode ? 'Disable voice mode' : 'Enable voice mode'}
-              >
-                {isConnecting ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : isVoiceMode ? (
-                  <Mic className="w-4 h-4" />
-                ) : (
-                  <MicOff className="w-4 h-4" />
-                )}
-              </button>
-              <button
-                onClick={() => {
-                  disconnectVoice();
-                  setIsOpen(false);
-                }}
-                className="p-1.5 rounded-lg hover:bg-secondary/50 transition-colors"
-              >
-                <X className="w-4 h-4 text-muted-foreground" />
-              </button>
-            </div>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="p-1.5 rounded-lg hover:bg-secondary/50 transition-colors"
+            >
+              <X className="w-4 h-4 text-muted-foreground" />
+            </button>
           </div>
-
-          {/* Voice Mode Indicator */}
-          {isVoiceMode && (
-            <div className="px-4 py-2 bg-primary/10 border-b border-border flex items-center justify-center gap-2">
-              <div className={`w-2 h-2 rounded-full ${isSpeaking ? 'bg-accent animate-pulse' : 'bg-primary'}`} />
-              <span className="text-xs text-primary">
-                {isSpeaking ? 'AI is speaking...' : 'Listening... speak now'}
-              </span>
-            </div>
-          )}
 
           {/* Messages */}
           <div className="h-80 overflow-y-auto p-4 space-y-3 bg-background/50">
@@ -518,21 +298,19 @@ RESPONSE RULES:
           </div>
 
           {/* Sample Questions */}
-          {!isVoiceMode && (
-            <div className="px-4 py-2 border-t border-border bg-secondary/30">
-              <div className="flex flex-wrap gap-1.5">
-                {sampleQuestions.map((question) => (
-                  <button
-                    key={question}
-                    onClick={() => handleSampleQuestion(question)}
-                    className="text-xs px-2.5 py-1 bg-secondary hover:bg-secondary/80 text-secondary-foreground rounded-full transition-colors"
-                  >
-                    {question}
-                  </button>
-                ))}
-              </div>
+          <div className="px-4 py-2 border-t border-border bg-secondary/30">
+            <div className="flex flex-wrap gap-1.5">
+              {sampleQuestions.map((question) => (
+                <button
+                  key={question}
+                  onClick={() => handleSampleQuestion(question)}
+                  className="text-xs px-2.5 py-1 bg-secondary hover:bg-secondary/80 text-secondary-foreground rounded-full transition-colors"
+                >
+                  {question}
+                </button>
+              ))}
             </div>
-          )}
+          </div>
 
           {/* Input Form */}
           <form onSubmit={handleSubmit} className="p-3 border-t border-border bg-background/80">
@@ -541,7 +319,7 @@ RESPONSE RULES:
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder={isVoiceMode ? "Voice mode active - speak or type..." : "Ask me anything..."}
+                placeholder="Ask me anything..."
                 disabled={isTyping}
                 className="flex-1 bg-secondary border-0 rounded-xl px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-50"
               />

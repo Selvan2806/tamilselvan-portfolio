@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Menu, X, User, Code, Folder, Award, Briefcase, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ExpandableTabs, TabItem } from '@/components/ui/expandable-tabs';
+import ThemeToggle from '@/components/ThemeToggle';
 
 const navTabs: TabItem[] = [
   { title: "About", icon: User, href: '#about' },
@@ -64,6 +65,8 @@ const Navigation = () => {
             activeColor="text-primary"
           />
 
+          <ThemeToggle />
+
           <Button variant="hero" size="sm" className="ml-2" asChild>
             <a href="#contact">Hire Me</a>
           </Button>
@@ -99,9 +102,12 @@ const Navigation = () => {
                 </a>
               );
             })}
-            <Button variant="hero" className="mt-2" asChild>
-              <a href="#contact" onClick={() => setIsMobileMenuOpen(false)}>Hire Me</a>
-            </Button>
+            <div className="flex items-center gap-2 mt-2">
+              <ThemeToggle />
+              <Button variant="hero" className="flex-1" asChild>
+                <a href="#contact" onClick={() => setIsMobileMenuOpen(false)}>Hire Me</a>
+              </Button>
+            </div>
           </div>
         </div>
       )}

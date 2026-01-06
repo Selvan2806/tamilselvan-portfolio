@@ -6,6 +6,7 @@ import SkillsSection from '@/components/SkillsSection';
 import ProjectsSection from '@/components/ProjectsSection';
 import CertificationsSection from '@/components/CertificationsSection';
 import ExperienceSection from '@/components/ExperienceSection';
+import GitHubStats from '@/components/GitHubStats';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 import FloatingChatbot from '@/components/FloatingChatbot';
@@ -35,6 +36,7 @@ const Index = () => {
           <ProjectsSection />
           <CertificationsSection />
           <ExperienceSection />
+          <GitHubStats />
           <ContactSection />
         </main>
         <Footer />

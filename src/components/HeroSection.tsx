@@ -6,14 +6,8 @@ import profilePhoto from '@/assets/profile-photo.jpeg';
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      {/* Background Elements */}
-      <div className="absolute inset-0 bg-background z-0" />
-      <div className="absolute inset-0 cyber-grid z-0" />
+      {/* Background Elements - simplified since ParallaxBackground handles global effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background z-0" />
-
-      {/* Glow Orbs */}
-      <div className="absolute top-20 right-20 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse-slow z-0" />
-      <div className="absolute bottom-20 left-20 w-72 h-72 bg-secondary/20 rounded-full blur-3xl animate-pulse-slow z-0" />
 
       <div className="section-container relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">

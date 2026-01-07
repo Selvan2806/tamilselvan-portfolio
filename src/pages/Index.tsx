@@ -12,6 +12,7 @@ import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 import FloatingChatbot from '@/components/FloatingChatbot';
 import ParallaxBackground from '@/components/ParallaxBackground';
+import ScrollProgressIndicator from '@/components/ScrollProgressIndicator';
 
 const Index = () => {
   return (
@@ -31,9 +32,12 @@ const Index = () => {
 
       <div className="min-h-screen bg-background relative">
         <ParallaxBackground />
+        <ScrollProgressIndicator />
         <Navigation />
         <main>
-          <HeroSection />
+          <section id="hero">
+            <HeroSection />
+          </section>
           <AboutSection />
           <SkillsSection />
           <ProjectsSection />

@@ -14,7 +14,7 @@ const GitHubStats = () => {
   const borderColor = isDark ? '30363d' : 'e1e4e8';
 
   return (
-    <section id="github" className="py-20 relative overflow-hidden">
+    <section id="github-stats" className="py-20 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 cyber-grid opacity-30" />
       <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-3xl" />

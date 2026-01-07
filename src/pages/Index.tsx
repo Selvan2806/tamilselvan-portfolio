@@ -11,6 +11,7 @@ import GitHubStats from '@/components/GitHubStats';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 import FloatingChatbot from '@/components/FloatingChatbot';
+import ParallaxBackground from '@/components/ParallaxBackground';
 
 const Index = () => {
   return (
@@ -28,7 +29,8 @@ const Index = () => {
         <link rel="canonical" href="/" />
       </Helmet>
 
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background relative">
+        <ParallaxBackground />
         <Navigation />
         <main>
           <HeroSection />

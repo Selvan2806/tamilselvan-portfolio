@@ -1,6 +1,5 @@
 import { Code2, Lightbulb, Rocket, Users } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { TextScramble } from '@/components/ui/text-scramble';
 
 const highlights = [
   {
@@ -39,8 +38,8 @@ const AboutSection = () => {
         >
           <span className="text-primary text-sm font-semibold uppercase tracking-widest">About Me</span>
           <h2 className="font-heading text-4xl sm:text-5xl font-bold mt-4 mb-6">
-            <TextScramble text="Aspiring Pentester &" />{' '}
-            <span className="gradient-text"><TextScramble text="Tech Enthusiast" scrambleDuration={1800} /></span>
+            Aspiring Pentester &{' '}
+            <span className="gradient-text">Tech Enthusiast</span>
           </h2>
           <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full" />
         </motion.div>

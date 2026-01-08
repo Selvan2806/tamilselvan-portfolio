@@ -1,6 +1,5 @@
 import { Briefcase, GraduationCap, Award, Book } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { TextScramble } from '@/components/ui/text-scramble';
 
 interface TimelineItem {
   type: 'work' | 'education' | 'achievement' | 'Learning' ;
@@ -51,8 +50,8 @@ const ExperienceSection = () => {
         >
           <span className="text-primary text-sm font-semibold uppercase tracking-widest">Experience</span>
           <h2 className="font-heading text-4xl sm:text-5xl font-bold mt-4 mb-6">
-            <TextScramble text="Career" />{' '}
-            <span className="gradient-text"><TextScramble text="Journey" scrambleDuration={1500} /></span>
+            Career{' '}
+            <span className="gradient-text">Journey</span>
           </h2>
           <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full" />
         </motion.div>

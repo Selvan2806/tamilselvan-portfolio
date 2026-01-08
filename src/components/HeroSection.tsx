@@ -2,7 +2,7 @@ import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import profilePhoto from '@/assets/profile-photo.jpeg';
-import { Typewriter } from '@/components/ui/typewriter';
+
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
@@ -62,15 +62,12 @@ const HeroSection = () => {
 
             {/* Subtitle */}
             <motion.p
-              className="text-xl sm:text-2xl lg:text-3xl text-muted-foreground font-light h-[1.5em]"
+              className="text-xl sm:text-2xl lg:text-3xl text-muted-foreground font-light"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <Typewriter 
-                text="Penetration Tester & AI Enthusiast" 
-                delay={60}
-              />
+              Penetration Tester & AI Enthusiast
             </motion.p>
 
             {/* Description */}

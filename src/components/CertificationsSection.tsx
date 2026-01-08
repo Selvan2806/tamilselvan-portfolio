@@ -1,5 +1,6 @@
 import { ExternalLink, Award } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { TextScramble } from '@/components/ui/text-scramble';
 
 interface Certification {
   title: string;
@@ -44,7 +45,7 @@ const CertificationsSection = () => {
         >
           <span className="text-primary text-sm font-semibold uppercase tracking-widest">Achievements</span>
           <h2 className="font-heading text-4xl sm:text-5xl font-bold mt-4 mb-6">
-            My <span className="gradient-text">Certifications</span>
+            <TextScramble text="My" /> <span className="gradient-text"><TextScramble text="Certifications" scrambleDuration={1800} /></span>
           </h2>
           <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full" />
         </motion.div>

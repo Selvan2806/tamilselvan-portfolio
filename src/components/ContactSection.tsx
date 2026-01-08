@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { z } from 'zod';
+import { TextScramble } from '@/components/ui/text-scramble';
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
@@ -112,8 +113,8 @@ const ContactSection = () => {
         >
           <span className="text-primary text-sm font-semibold uppercase tracking-widest">Contact</span>
           <h2 className="font-heading text-4xl sm:text-5xl font-bold mt-4 mb-6">
-            Let's{' '}
-            <span className="gradient-text">Connect</span>
+            <TextScramble text="Let's" />{' '}
+            <span className="gradient-text"><TextScramble text="Connect" scrambleDuration={1500} /></span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Have a project in mind or want to discuss opportunities? 

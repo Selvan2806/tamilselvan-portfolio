@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import vivaImage from '@/assets/project-vivas.png';
 import logoImage from '@/assets/project-logo.png';
 import mentalImage from '@/assets/project-mentals.png';
+import { TextScramble } from '@/components/ui/text-scramble';
 
 interface Project {
   title: string;
@@ -57,8 +58,8 @@ const ProjectsSection = () => {
         >
           <span className="text-primary text-sm font-semibold uppercase tracking-widest">Projects</span>
           <h2 className="font-heading text-4xl sm:text-5xl font-bold mt-4 mb-6">
-            Featured{' '}
-            <span className="gradient-text">Work</span>
+            <TextScramble text="Featured" />{' '}
+            <span className="gradient-text"><TextScramble text="Work" scrambleDuration={1200} /></span>
           </h2>
           <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full" />
         </motion.div>

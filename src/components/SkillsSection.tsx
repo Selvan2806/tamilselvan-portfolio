@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Star } from 'lucide-react';
+import { TextScramble } from '@/components/ui/text-scramble';
 
 type SkillCategory = 'all' | 'languages' | 'frontend' | 'backend' | 'tools' | 'ai';
 
@@ -101,8 +102,8 @@ const SkillsSection = () => {
         >
           <span className="text-primary text-sm font-semibold uppercase tracking-widest">Skills</span>
           <h2 className="font-heading text-4xl sm:text-5xl font-bold mt-4 mb-6">
-            Technologies &{' '}
-            <span className="gradient-text">Expertise</span>
+            <TextScramble text="Technologies &" />{' '}
+            <span className="gradient-text"><TextScramble text="Expertise" scrambleDuration={1800} /></span>
           </h2>
           <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full" />
         </motion.div>

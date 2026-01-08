@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Quote, Star } from 'lucide-react';
+import { TextScramble } from '@/components/ui/text-scramble';
 
 interface Testimonial {
   id: number;
@@ -60,7 +61,7 @@ const TestimonialsSection = () => {
             <span className="text-sm text-muted-foreground">Testimonials</span>
           </div>
           <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-            What People <span className="gradient-text">Say</span>
+            <TextScramble text="What People" /> <span className="gradient-text"><TextScramble text="Say" scrambleDuration={1000} /></span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Feedback from mentors, collaborators, and colleagues I've had the pleasure to work with

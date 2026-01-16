@@ -11,22 +11,34 @@ interface Certification {
 
 const certifications: Certification[] = [
   {
-    title: 'Full Stack Web Development',
-    issuer: 'Udemy',
-    date: '2025',
-    link: '#',
+    title: 'Ethical Hacking',
+    issuer: 'NPTEL',
+    date: '2024',
   },
   {
-    title: 'Advanced React & Redux',
-    issuer: 'Udemy',
+    title: 'Full Stack Developer',
+    issuer: 'NOVITECH',
     date: '2024',
-    link: '#',
   },
   {
-    title: 'Python for Data Science',
-    issuer: 'Coursera',
+    title: 'Cyber Simulation',
+    issuer: 'Deloitte',
     date: '2024',
-    link: '#',
+  },
+  {
+    title: 'Computer Networks',
+    issuer: 'Udemy',
+    date: '2024',
+  },
+  {
+    title: 'Introduction to Web Hacking',
+    issuer: 'Udemy',
+    date: '2024',
+  },
+  {
+    title: 'UI & UX Design',
+    issuer: 'Guvi & HCL',
+    date: '2024',
   },
 ];
 

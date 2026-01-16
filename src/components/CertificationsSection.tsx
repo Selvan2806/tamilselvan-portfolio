@@ -31,8 +31,8 @@ const certifications: Certification[] = [
   {
     title: 'Computer Networks',
     issuer: 'Udemy',
-    date: '2024',
-    link: '', // Will be updated with PDF link
+    date: '2026',
+    link: 'https://ude.my/UC-1e53dbaa-aa10-4da0-bd14-62504dd47f9e',
   },
   {
     title: 'Introduction to Web Hacking',

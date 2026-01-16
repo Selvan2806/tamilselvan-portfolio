@@ -20,7 +20,7 @@ const certifications: Certification[] = [
     title: 'Full Stack Developer',
     issuer: 'NOVITECH',
     date: '2024',
-    link: '', // Will be updated with PDF link
+    link: '/certificates/fullstack-developer-novitech.pdf',
   },
   {
     title: 'Cyber Simulation',

@@ -38,7 +38,7 @@ const certifications: Certification[] = [
     title: 'Introduction to Web Hacking',
     issuer: 'Udemy',
     date: '2024',
-    link: '', // Will be updated with PDF link
+    link: '/certificates/web-hacking-udemy.pdf',
   },
   {
     title: 'UI & UX Design',

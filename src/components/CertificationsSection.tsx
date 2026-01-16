@@ -14,7 +14,7 @@ const certifications: Certification[] = [
     title: 'Ethical Hacking',
     issuer: 'NPTEL',
     date: '2024',
-    link: '', // Will be updated with PDF link
+    link: '/certificates/ethical-hacking-nptel.pdf',
   },
   {
     title: 'Full Stack Developer',

@@ -26,7 +26,7 @@ const certifications: Certification[] = [
     title: 'Cyber Simulation',
     issuer: 'Deloitte',
     date: '2024',
-    link: '', // Will be updated with PDF link
+    link: '/certificates/cyber-simulation-deloitte.pdf',
   },
   {
     title: 'Computer Networks',

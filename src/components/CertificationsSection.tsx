@@ -1,5 +1,12 @@
-import { ExternalLink, Award } from 'lucide-react';
+import { Award, Eye } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useState } from 'react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 
 interface Certification {
   title: string;
@@ -32,7 +39,7 @@ const certifications: Certification[] = [
     title: 'Computer Networks',
     issuer: 'Udemy',
     date: '2026',
-    link: 'https://ude.my/UC-1e53dbaa-aa10-4da0-bd14-62504dd47f9e',
+    link: '/certificates/computer-networks-udemy.jpg',
   },
   {
     title: 'Introduction to Web Hacking',
@@ -49,6 +56,20 @@ const certifications: Certification[] = [
 ];
 
 const CertificationsSection = () => {
+  const [selectedCert, setSelectedCert] = useState<Certification | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleViewCertificate = (cert: Certification) => {
+    if (cert.link) {
+      setSelectedCert(cert);
+      setIsOpen(true);
+    }
+  };
+
+  const isImage = (link: string) => {
+    return link.endsWith('.jpg') || link.endsWith('.jpeg') || link.endsWith('.png') || link.endsWith('.webp');
+  };
+
   return (
     <section id="certifications" className="py-24 relative bg-secondary/20">
       <div className="section-container">
@@ -83,14 +104,13 @@ const CertificationsSection = () => {
                   <Award className="w-6 h-6 text-primary" />
                 </div>
                 {cert.link && (
-                  <a
-                    href={cert.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    onClick={() => handleViewCertificate(cert)}
                     className="text-muted-foreground hover:text-primary transition-colors"
+                    aria-label="View certificate"
                   >
-                    <ExternalLink className="w-5 h-5" />
-                  </a>
+                    <Eye className="w-5 h-5" />
+                  </button>
                 )}
               </div>
 
@@ -106,6 +126,34 @@ const CertificationsSection = () => {
           ))}
         </div>
       </div>
+
+      {/* Certificate Dialog */}
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent className="max-w-4xl w-[95vw] h-[85vh] p-0 overflow-hidden">
+          <DialogHeader className="p-4 pb-2 border-b border-border">
+            <DialogTitle className="text-lg font-heading">
+              {selectedCert?.title} - {selectedCert?.issuer}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="flex-1 w-full h-full overflow-auto p-4">
+            {selectedCert?.link && (
+              isImage(selectedCert.link) ? (
+                <img
+                  src={selectedCert.link}
+                  alt={`${selectedCert.title} Certificate`}
+                  className="w-full h-auto object-contain rounded-lg"
+                />
+              ) : (
+                <iframe
+                  src={selectedCert.link}
+                  className="w-full h-full min-h-[70vh] rounded-lg"
+                  title={`${selectedCert.title} Certificate`}
+                />
+              )
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };

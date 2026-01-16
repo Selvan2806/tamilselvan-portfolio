@@ -14,31 +14,37 @@ const certifications: Certification[] = [
     title: 'Ethical Hacking',
     issuer: 'NPTEL',
     date: '2024',
+    link: '', // Will be updated with PDF link
   },
   {
     title: 'Full Stack Developer',
     issuer: 'NOVITECH',
     date: '2024',
+    link: '', // Will be updated with PDF link
   },
   {
     title: 'Cyber Simulation',
     issuer: 'Deloitte',
     date: '2024',
+    link: '', // Will be updated with PDF link
   },
   {
     title: 'Computer Networks',
     issuer: 'Udemy',
     date: '2024',
+    link: '', // Will be updated with PDF link
   },
   {
     title: 'Introduction to Web Hacking',
     issuer: 'Udemy',
     date: '2024',
+    link: '', // Will be updated with PDF link
   },
   {
     title: 'UI & UX Design',
     issuer: 'Guvi & HCL',
     date: '2024',
+    link: '', // Will be updated with PDF link
   },
 ];
 

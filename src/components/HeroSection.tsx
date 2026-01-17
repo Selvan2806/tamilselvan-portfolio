@@ -2,8 +2,11 @@ import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import profilePhoto from '@/assets/profile-photo.jpeg';
+import { useLanguage } from '@/hooks/use-language';
 
 const HeroSection = () => {
+  const { t } = useLanguage();
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       {/* Background Elements - simplified since ParallaxBackground handles global effects */}
@@ -46,7 +49,7 @@ const HeroSection = () => {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
               </span>
-              <span className="text-sm text-muted-foreground">Available for opportunities</span>
+              <span className="text-sm text-muted-foreground">{t.hero.available}</span>
             </motion.div>
 
             {/* Main Heading */}
@@ -56,8 +59,8 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <span className="text-foreground">Hi, I'm </span>
-              <span className="gradient-text block sm:inline">TAMILSELVAN P</span>
+              <span className="text-foreground">{t.hero.greeting} </span>
+              <span className="gradient-text block sm:inline">{t.hero.name}</span>
             </motion.h1>
 
             {/* Subtitle */}
@@ -67,7 +70,7 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              Penetration Tester & AI Enthusiast
+              {t.hero.title}
             </motion.p>
 
             {/* Description */}
@@ -77,8 +80,7 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              Building intelligent, scalable web applications with modern technologies and
-              Passionate about exploring vulnerablities in Machines.
+              {t.hero.description}
             </motion.p>
 
             {/* CTA Buttons */}
@@ -89,14 +91,14 @@ const HeroSection = () => {
               transition={{ duration: 0.5, delay: 0.5 }}
             >
               <Button variant="hero" size="xl" asChild>
-                <a href="#projects">View My Work</a>
+                <a href="#projects">{t.hero.viewWork}</a>
               </Button>
               <Button
                 variant="hero-outline"
                 size="xl"
                 onClick={() => window.dispatchEvent(new CustomEvent('open-chatbot'))}
               >
-                Chat with Assistant
+                {t.hero.chatWithAssistant}
               </Button>
             </motion.div>
 
@@ -144,7 +146,7 @@ const HeroSection = () => {
             href="#about"
             className="flex flex-col items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
           >
-            <span className="text-xs uppercase tracking-widest">Scroll</span>
+            <span className="text-xs uppercase tracking-widest">{t.hero.scroll}</span>
             <ArrowDown className="h-4 w-4 animate-bounce" />
           </a>
         </motion.div>

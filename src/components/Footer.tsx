@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
+import { useLanguage } from '@/hooks/use-language';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const { t } = useLanguage();
 
   return (
     <footer className="py-8 border-t border-border">
@@ -11,7 +13,7 @@ const Footer = () => {
             <span className="font-heading text-lg font-bold gradient-text">TAMILSELVAN P</span>
           </div>
           <p className="text-sm text-muted-foreground">
-            © {currentYear} All rights reserved. Built with passion.
+            © {currentYear} {t.footer.rights}
           </p>
           <div className="flex items-center gap-4">
             <Link to="/admin" className="text-sm text-muted-foreground hover:text-primary transition-colors">

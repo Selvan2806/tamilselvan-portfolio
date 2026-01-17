@@ -3,20 +3,23 @@ import { Menu, X, User, Code, Folder, Award, Briefcase, Mail } from 'lucide-reac
 import { Button } from '@/components/ui/button';
 import { ExpandableTabs, TabItem } from '@/components/ui/expandable-tabs';
 import ThemeToggle from '@/components/ThemeToggle';
-
-const navTabs: TabItem[] = [
-  { title: "About", icon: User, href: '#about' },
-  { title: "Skills", icon: Code, href: '#skills' },
-  { title: "Projects", icon: Folder, href: '#projects' },
-  { title: "Certifications", icon: Award, href: '#certifications' },
-  { title: "Experience", icon: Briefcase, href: '#experience' },
-  { type: "separator" },
-  { title: "Contact", icon: Mail, href: '#contact' },
-];
+import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { useLanguage } from '@/hooks/use-language';
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { t } = useLanguage();
+
+  const navTabs: TabItem[] = [
+    { title: t.nav.about, icon: User, href: '#about' },
+    { title: t.nav.skills, icon: Code, href: '#skills' },
+    { title: t.nav.projects, icon: Folder, href: '#projects' },
+    { title: t.nav.certifications, icon: Award, href: '#certifications' },
+    { title: t.nav.experience, icon: Briefcase, href: '#experience' },
+    { type: "separator" },
+    { title: t.nav.contact, icon: Mail, href: '#contact' },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -65,10 +68,11 @@ const Navigation = () => {
             activeColor="text-primary"
           />
 
+          <LanguageSwitcher />
           <ThemeToggle />
 
           <Button variant="hero" size="sm" className="ml-2" asChild>
-            <a href="#contact">Hire Me</a>
+            <a href="#contact">{t.nav.hireMe}</a>
           </Button>
         </div>
 
@@ -103,9 +107,10 @@ const Navigation = () => {
               );
             })}
             <div className="flex items-center gap-2 mt-2">
+              <LanguageSwitcher />
               <ThemeToggle />
               <Button variant="hero" className="flex-1" asChild>
-                <a href="#contact" onClick={() => setIsMobileMenuOpen(false)}>Hire Me</a>
+                <a href="#contact" onClick={() => setIsMobileMenuOpen(false)}>{t.nav.hireMe}</a>
               </Button>
             </div>
           </div>

@@ -1,30 +1,33 @@
 import { Code2, Lightbulb, Rocket, Users } from 'lucide-react';
 import { motion } from 'framer-motion';
-
-const highlights = [
-  {
-    icon: Code2,
-    title: 'Clean Code',
-    description: 'Writing maintainable, scalable code with best practices',
-  },
-  {
-    icon: Lightbulb,
-    title: 'Problem Solver',
-    description: 'Tackling complex challenges with creative solutions',
-  },
-  {
-    icon: Rocket,
-    title: 'Fast Learner',
-    description: 'Quickly adapting to new technologies and frameworks',
-  },
-  {
-    icon: Users,
-    title: 'Team Player',
-    description: 'Collaborating effectively in agile environments',
-  },
-];
+import { useLanguage } from '@/hooks/use-language';
 
 const AboutSection = () => {
+  const { t } = useLanguage();
+
+  const highlights = [
+    {
+      icon: Code2,
+      title: t.about.highlights.cleanCode.title,
+      description: t.about.highlights.cleanCode.description,
+    },
+    {
+      icon: Lightbulb,
+      title: t.about.highlights.problemSolver.title,
+      description: t.about.highlights.problemSolver.description,
+    },
+    {
+      icon: Rocket,
+      title: t.about.highlights.fastLearner.title,
+      description: t.about.highlights.fastLearner.description,
+    },
+    {
+      icon: Users,
+      title: t.about.highlights.teamPlayer.title,
+      description: t.about.highlights.teamPlayer.description,
+    },
+  ];
+
   return (
     <section id="about" className="py-24 relative">
       <div className="section-container">
@@ -36,10 +39,10 @@ const AboutSection = () => {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
         >
-          <span className="text-primary text-sm font-semibold uppercase tracking-widest">About Me</span>
+          <span className="text-primary text-sm font-semibold uppercase tracking-widest">{t.about.label}</span>
           <h2 className="font-heading text-4xl sm:text-5xl font-bold mt-4 mb-6">
-            Aspiring Pentester &{' '}
-            <span className="gradient-text">Tech Enthusiast</span>
+            {t.about.title1}{' '}
+            <span className="gradient-text">{t.about.title2}</span>
           </h2>
           <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full" />
         </motion.div>
@@ -54,19 +57,15 @@ const AboutSection = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <p className="text-lg text-muted-foreground leading-relaxed">
-              I'm <span className="text-foreground font-semibold">TAMILSELVAN P</span>, A Third Year Computer
-              Science Student Pursuing at Annai Mira College of Engineering and Technology
+              {t.about.intro}
             </p>
             
             <p className="text-lg text-muted-foreground leading-relaxed">
-              An Aspiring Penetration Tester  with a deep interest in building intelligent web applications 
-              that make a real impact.
+              {t.about.aspiring}
             </p>
             
             <p className="text-lg text-muted-foreground leading-relaxed">
-               My journey in technology spans across various domains including web development, 
-              artificial intelligence, and Cyber Security. I thrive on creating seamless user 
-              experiences backed by robust, scalable architectures.
+              {t.about.journey}
             </p>
 
             {/* Quick Stats */}
@@ -79,11 +78,11 @@ const AboutSection = () => {
             >
               <div>
                 <div className="text-4xl font-heading font-bold gradient-text">5+</div>
-                <div className="text-sm text-muted-foreground mt-1">Projects Completed</div>
+                <div className="text-sm text-muted-foreground mt-1">{t.about.projectsCompleted}</div>
               </div>
               <div>
                 <div className="text-4xl font-heading font-bold gradient-text">10+</div>
-                <div className="text-sm text-muted-foreground mt-1">Technologies</div>
+                <div className="text-sm text-muted-foreground mt-1">{t.about.technologies}</div>
               </div>
             </motion.div>
           </motion.div>

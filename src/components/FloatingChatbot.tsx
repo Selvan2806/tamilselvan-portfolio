@@ -31,6 +31,7 @@ const FloatingChatbot = () => {
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
   
   // Anti-spam protection (simpler for chatbot)
   const { validateChatSubmission } = useAntiSpam(true);
@@ -48,6 +49,27 @@ const FloatingChatbot = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Close chatbot when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (
+        isOpen &&
+        chatContainerRef.current &&
+        !chatContainerRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [isOpen]);
 
   const handleResumeDownload = (content: string) => {
     const lowerContent = content.toLowerCase();
@@ -240,6 +262,7 @@ RESPONSE RULES:
 
       {/* Chat Window */}
       <div
+        ref={chatContainerRef}
         className={`fixed bottom-6 right-6 z-50 w-[380px] max-w-[calc(100vw-3rem)] transition-all duration-300 ${isOpen
           ? 'opacity-100 translate-y-0 scale-100'
           : 'opacity-0 translate-y-4 scale-95 pointer-events-none'

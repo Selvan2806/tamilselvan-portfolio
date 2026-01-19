@@ -208,6 +208,14 @@
     animation: gradient 8s ease infinite;
   }
 
+  .animate-bounce-slow {
+    animation: bounce-slow 3s ease-in-out infinite;
+  }
+
+  .animate-blink {
+    animation: blink 3s ease-in-out infinite;
+  }
+
   @keyframes float {
 
     0%,
@@ -231,6 +239,24 @@
 
     100% {
       background-position: 0% 50%;
+    }
+  }
+
+  @keyframes bounce-slow {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  @keyframes blink {
+    0%, 45%, 55%, 100% {
+      transform: scaleY(1);
+    }
+    50% {
+      transform: scaleY(0.1);
     }
   }
 

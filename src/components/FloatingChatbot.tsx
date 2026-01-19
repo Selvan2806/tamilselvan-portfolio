@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User, Sparkles, Loader2, X, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { useAntiSpam } from '@/hooks/use-anti-spam';
 
 interface Message {
   id: string;
@@ -30,6 +31,9 @@ const FloatingChatbot = () => {
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  
+  // Anti-spam protection (simpler for chatbot)
+  const { validateChatSubmission } = useAntiSpam(true);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -179,6 +183,13 @@ RESPONSE RULES:
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isTyping) return;
+
+    // Anti-spam validation
+    const spamCheck = validateChatSubmission();
+    if (!spamCheck.valid) {
+      toast.error(spamCheck.error || 'Please wait a moment before sending.');
+      return;
+    }
 
     const userMessage: Message = {
       id: Date.now().toString(),

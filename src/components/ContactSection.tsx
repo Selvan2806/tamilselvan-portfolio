@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Mail, Phone, MapPin, Send, CheckCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, CheckCircle, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { z } from 'zod';
+import { useAntiSpam } from '@/hooks/use-anti-spam';
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
@@ -43,6 +44,17 @@ const ContactSection = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  
+  // Anti-spam protection
+  const {
+    honeypot,
+    setHoneypot,
+    challenge,
+    challengeAnswer,
+    setChallengeAnswer,
+    regenerateChallenge,
+    validateSubmission,
+  } = useAntiSpam();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -59,6 +71,18 @@ const ContactSection = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
+    
+    // Anti-spam validation first
+    const spamCheck = validateSubmission();
+    if (!spamCheck.valid) {
+      if (spamCheck.error?.includes('security question')) {
+        setErrors({ challenge: spamCheck.error });
+        regenerateChallenge();
+      } else {
+        toast.error(spamCheck.error || 'Submission failed. Please try again.');
+      }
+      return;
+    }
     
     // Validate input
     const result = contactSchema.safeParse(formData);
@@ -92,6 +116,7 @@ const ContactSection = () => {
       });
 
       setFormData({ name: '', email: '', subject: '', message: '' });
+      regenerateChallenge(); // Reset challenge after successful submission
     } catch (error) {
       toast.error('Failed to send message. Please try again.');
     } finally {
@@ -265,7 +290,7 @@ const ContactSection = () => {
                 />
                 {errors.subject && <p className="text-destructive text-sm mt-1">{errors.subject}</p>}
               </div>
-              <div className="mb-6">
+              <div className="mb-4">
                 <label htmlFor="message" className="block text-sm font-medium text-muted-foreground mb-2">
                   Message
                 </label>
@@ -279,6 +304,44 @@ const ContactSection = () => {
                   placeholder="Tell me about your project..."
                 />
                 {errors.message && <p className="text-destructive text-sm mt-1">{errors.message}</p>}
+              </div>
+              
+              {/* Anti-spam: Honeypot field (hidden from humans) */}
+              <div className="absolute -left-[9999px] opacity-0 h-0 overflow-hidden" aria-hidden="true">
+                <label htmlFor="website">Website</label>
+                <input
+                  type="text"
+                  id="website"
+                  name="website"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </div>
+              
+              {/* Anti-spam: Math challenge */}
+              <div className="mb-6">
+                <label htmlFor="challenge" className="block text-sm font-medium text-muted-foreground mb-2 flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-primary" />
+                  Security Check: {challenge.question}
+                </label>
+                <input
+                  type="text"
+                  id="challenge"
+                  name="challenge"
+                  value={challengeAnswer}
+                  onChange={(e) => {
+                    setChallengeAnswer(e.target.value);
+                    if (errors.challenge) {
+                      setErrors((prev) => ({ ...prev, challenge: '' }));
+                    }
+                  }}
+                  className={`w-full bg-secondary border-0 rounded-lg px-4 py-3 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 ${errors.challenge ? 'ring-2 ring-destructive' : ''}`}
+                  placeholder="Enter your answer"
+                  autoComplete="off"
+                />
+                {errors.challenge && <p className="text-destructive text-sm mt-1">{errors.challenge}</p>}
               </div>
               <Button type="submit" variant="hero" size="lg" className="w-full" disabled={isSubmitting}>
                 {isSubmitting ? (

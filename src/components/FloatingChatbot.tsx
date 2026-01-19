@@ -248,15 +248,28 @@ RESPONSE RULES:
 
   return (
     <>
-      {/* Floating Button */}
+      {/* Floating Button - Animated Bot Avatar */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-r from-primary to-[hsl(190_80%_45%)] text-primary-foreground shadow-lg hover:shadow-[0_0_30px_hsla(174,72%,56%,0.5)] transition-all duration-300 flex items-center justify-center ${isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100'
+        className={`fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-gradient-to-br from-primary via-accent to-primary text-primary-foreground shadow-xl hover:shadow-[0_0_40px_hsla(174,72%,56%,0.6)] transition-all duration-300 flex items-center justify-center group ${isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100 animate-bounce-slow'
           }`}
+        style={{
+          animation: isOpen ? 'none' : 'bounce-slow 3s ease-in-out infinite',
+        }}
       >
-        <MessageCircle className="w-6 h-6" />
-        <span className="absolute -top-1 -right-1 w-4 h-4 bg-accent rounded-full flex items-center justify-center">
-          <Sparkles className="w-2.5 h-2.5" />
+        {/* Bot Face */}
+        <div className="relative w-10 h-10 bg-background/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+          {/* Eyes */}
+          <div className="absolute top-2.5 left-2 w-2 h-2.5 bg-primary-foreground rounded-full animate-blink" />
+          <div className="absolute top-2.5 right-2 w-2 h-2.5 bg-primary-foreground rounded-full animate-blink" />
+          {/* Smile */}
+          <div className="absolute bottom-2.5 w-4 h-2 border-b-2 border-primary-foreground rounded-b-full" />
+        </div>
+        {/* Glow Ring */}
+        <span className="absolute inset-0 rounded-full border-2 border-primary/50 animate-ping opacity-30" />
+        {/* Online indicator */}
+        <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-green-400 rounded-full border-2 border-background flex items-center justify-center">
+          <span className="w-2 h-2 bg-green-400 rounded-full animate-ping" />
         </span>
       </button>
 

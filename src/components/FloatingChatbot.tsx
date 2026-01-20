@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Send, Bot, User, Sparkles, Loader2, X, MessageCircle } from 'lucide-react';
+import { Send, Bot, User, Sparkles, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { useAntiSpam } from '@/hooks/use-anti-spam';
@@ -19,20 +19,43 @@ const sampleQuestions = [
 
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/portfolio-chat`;
 
+const STORAGE_KEY = 'chatbot-history';
+const INITIAL_MESSAGE: Message = {
+  id: '1',
+  role: 'assistant',
+  content: `👋 Hi! I'm Selvan's AI assistant. What can I do for you?`,
+};
+
+const loadStoredMessages = (): Message[] => {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    }
+  } catch (e) {
+    console.error('Failed to load chat history:', e);
+  }
+  return [INITIAL_MESSAGE];
+};
+
 const FloatingChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showWelcomeTooltip, setShowWelcomeTooltip] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      role: 'assistant',
-      content: `👋 Hi! I'm an Selvan's AI assistant. What can I do for you?`,
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>(loadStoredMessages);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  // Persist messages to localStorage
+  useEffect(() => {
+    if (messages.length > 0 && messages[0].id !== '1' || messages.length > 1) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+    }
+  }, [messages]);
 
   // Show welcome tooltip on first visit
   useEffect(() => {
@@ -378,8 +401,10 @@ RESPONSE RULES:
                 <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
                   <Bot className="w-3.5 h-3.5 text-primary-foreground" />
                 </div>
-                <div className="bg-secondary p-3 rounded-2xl rounded-bl-md">
-                  <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
+                <div className="bg-secondary p-3 rounded-2xl rounded-bl-md flex items-center gap-1.5">
+                  <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                 </div>
               </div>
             )}

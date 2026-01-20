@@ -21,6 +21,7 @@ const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/portfolio-ch
 
 const FloatingChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showWelcomeTooltip, setShowWelcomeTooltip] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -32,6 +33,36 @@ const FloatingChatbot = () => {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  // Show welcome tooltip on first visit
+  useEffect(() => {
+    const hasVisited = localStorage.getItem('chatbot-visited');
+    if (!hasVisited) {
+      const timer = setTimeout(() => {
+        setShowWelcomeTooltip(true);
+      }, 2000); // Show after 2 seconds
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  // Hide tooltip when chatbot is opened and mark as visited
+  useEffect(() => {
+    if (isOpen && showWelcomeTooltip) {
+      setShowWelcomeTooltip(false);
+      localStorage.setItem('chatbot-visited', 'true');
+    }
+  }, [isOpen, showWelcomeTooltip]);
+
+  // Auto-hide tooltip after 8 seconds
+  useEffect(() => {
+    if (showWelcomeTooltip) {
+      const timer = setTimeout(() => {
+        setShowWelcomeTooltip(false);
+        localStorage.setItem('chatbot-visited', 'true');
+      }, 8000);
+      return () => clearTimeout(timer);
+    }
+  }, [showWelcomeTooltip]);
   
   // Anti-spam protection (simpler for chatbot)
   const { validateChatSubmission } = useAntiSpam(true);
@@ -248,6 +279,17 @@ RESPONSE RULES:
 
   return (
     <>
+      {/* Welcome Tooltip */}
+      {showWelcomeTooltip && !isOpen && (
+        <div className="fixed bottom-24 right-6 z-50 animate-fade-in">
+          <div className="relative bg-primary text-primary-foreground px-4 py-2.5 rounded-xl shadow-lg max-w-[160px]">
+            <p className="text-sm font-medium">👋 Hi! Need help?</p>
+            {/* Arrow pointing down */}
+            <div className="absolute -bottom-2 right-6 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] border-t-primary" />
+          </div>
+        </div>
+      )}
+
       {/* Floating Button - Animated Bot Avatar */}
       <button
         onClick={() => setIsOpen(!isOpen)}

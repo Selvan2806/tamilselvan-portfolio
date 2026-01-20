@@ -281,7 +281,10 @@ RESPONSE RULES:
     <>
       {/* Welcome Tooltip */}
       {showWelcomeTooltip && !isOpen && (
-        <div className="fixed bottom-24 right-6 z-50 animate-fade-in">
+        <div 
+          className="fixed bottom-24 right-6 z-50 animate-fade-in"
+          style={{ animation: 'bounce-slow 3s ease-in-out infinite' }}
+        >
           <div className="relative bg-primary text-primary-foreground px-4 py-2.5 rounded-xl shadow-lg max-w-[160px]">
             <p className="text-sm font-medium">👋 Hi! Need help?</p>
             {/* Arrow pointing down */}

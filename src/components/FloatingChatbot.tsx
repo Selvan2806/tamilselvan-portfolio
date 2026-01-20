@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Send, Bot, User, Sparkles, X } from 'lucide-react';
+import { Send, Bot, User, Sparkles, X, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { useAntiSpam } from '@/hooks/use-anti-spam';
@@ -358,12 +358,25 @@ RESPONSE RULES:
                 <p className="text-xs text-muted-foreground">AI-powered assistant</p>
               </div>
             </div>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="p-1.5 rounded-lg hover:bg-secondary/50 transition-colors"
-            >
-              <X className="w-4 h-4 text-muted-foreground" />
-            </button>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => {
+                  setMessages([INITIAL_MESSAGE]);
+                  localStorage.removeItem(STORAGE_KEY);
+                  toast.success('Chat history cleared');
+                }}
+                className="p-1.5 rounded-lg hover:bg-secondary/50 transition-colors"
+                title="Clear chat history"
+              >
+                <Trash2 className="w-4 h-4 text-muted-foreground" />
+              </button>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="p-1.5 rounded-lg hover:bg-secondary/50 transition-colors"
+              >
+                <X className="w-4 h-4 text-muted-foreground" />
+              </button>
+            </div>
           </div>
 
           {/* Messages */}

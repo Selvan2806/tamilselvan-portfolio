@@ -42,6 +42,35 @@ const loadStoredMessages = (): Message[] => {
   return [INITIAL_MESSAGE];
 };
 
+// Function to parse and render message content with clickable links
+const renderMessageWithLinks = (content: string, isUser: boolean) => {
+  // URL regex pattern
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  const parts = content.split(urlRegex);
+  
+  return parts.map((part, index) => {
+    if (urlRegex.test(part)) {
+      // Reset regex lastIndex since test() advances it
+      urlRegex.lastIndex = 0;
+      return (
+        <a
+          key={index}
+          href={part}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`underline hover:opacity-80 transition-opacity ${
+            isUser ? 'text-primary-foreground' : 'text-primary'
+          }`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {part}
+        </a>
+      );
+    }
+    return <span key={index}>{part}</span>;
+  });
+};
+
 const FloatingChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showWelcomeTooltip, setShowWelcomeTooltip] = useState(false);
@@ -473,7 +502,9 @@ RESPONSE RULES:
                     : 'bg-secondary text-secondary-foreground rounded-bl-md'
                     }`}
                 >
-                  <p className="whitespace-pre-line leading-relaxed">{message.content}</p>
+                  <p className="whitespace-pre-line leading-relaxed">
+                    {renderMessageWithLinks(message.content, message.role === 'user')}
+                  </p>
                 </div>
               </div>
             ))}

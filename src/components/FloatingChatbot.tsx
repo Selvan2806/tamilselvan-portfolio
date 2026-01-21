@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Send, Bot, User, Sparkles, X, Trash2 } from 'lucide-react';
+import { Send, Bot, User, Sparkles, X, Trash2, Volume2, VolumeX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { useAntiSpam } from '@/hooks/use-anti-spam';
@@ -48,8 +48,17 @@ const FloatingChatbot = () => {
   const [messages, setMessages] = useState<Message[]>(loadStoredMessages);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(() => {
+    const stored = localStorage.getItem('chatbot-sound-enabled');
+    return stored !== 'false'; // Default to true
+  });
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  // Persist sound preference
+  useEffect(() => {
+    localStorage.setItem('chatbot-sound-enabled', String(soundEnabled));
+  }, [soundEnabled]);
 
   // Persist messages to localStorage
   useEffect(() => {
@@ -92,7 +101,14 @@ const FloatingChatbot = () => {
   const { validateChatSubmission } = useAntiSpam(true);
   
   // Sound effects
-  const { playSound, preloadSounds } = useChatbotSounds();
+  const { playSound: playSoundRaw, preloadSounds } = useChatbotSounds();
+  
+  // Wrapper that respects sound preference
+  const playSound = (type: 'open' | 'close' | 'send' | 'receive') => {
+    if (soundEnabled) {
+      playSoundRaw(type);
+    }
+  };
   
   // Preload sounds on mount
   useEffect(() => {
@@ -385,6 +401,17 @@ RESPONSE RULES:
               </div>
             </div>
             <div className="flex items-center gap-1">
+              <button
+                onClick={() => setSoundEnabled(!soundEnabled)}
+                className="p-1.5 rounded-lg hover:bg-secondary/50 transition-colors"
+                title={soundEnabled ? 'Mute sounds' : 'Enable sounds'}
+              >
+                {soundEnabled ? (
+                  <Volume2 className="w-4 h-4 text-muted-foreground" />
+                ) : (
+                  <VolumeX className="w-4 h-4 text-muted-foreground" />
+                )}
+              </button>
               <button
                 onClick={() => {
                   setMessages([INITIAL_MESSAGE]);

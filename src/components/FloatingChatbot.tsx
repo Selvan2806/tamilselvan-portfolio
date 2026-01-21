@@ -3,6 +3,7 @@ import { Send, Bot, User, Sparkles, X, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { useAntiSpam } from '@/hooks/use-anti-spam';
+import { useChatbotSounds } from '@/hooks/use-chatbot-sounds';
 
 interface Message {
   id: string;
@@ -89,16 +90,37 @@ const FloatingChatbot = () => {
   
   // Anti-spam protection (simpler for chatbot)
   const { validateChatSubmission } = useAntiSpam(true);
+  
+  // Sound effects
+  const { playSound, preloadSounds } = useChatbotSounds();
+  
+  // Preload sounds on mount
+  useEffect(() => {
+    preloadSounds();
+  }, [preloadSounds]);
+  
+  // Play sounds on open/close
+  const handleToggle = () => {
+    if (!isOpen) {
+      playSound('open');
+    } else {
+      playSound('close');
+    }
+    setIsOpen(!isOpen);
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   useEffect(() => {
-    const handleOpenChatbot = () => setIsOpen(true);
+    const handleOpenChatbot = () => {
+      playSound('open');
+      setIsOpen(true);
+    };
     window.addEventListener('open-chatbot', handleOpenChatbot);
     return () => window.removeEventListener('open-chatbot', handleOpenChatbot);
-  }, []);
+  }, [playSound]);
 
   useEffect(() => {
     scrollToBottom();
@@ -276,6 +298,9 @@ RESPONSE RULES:
     // Check for resume download
     handleResumeDownload(userMessage.content);
 
+    // Play send sound
+    playSound('send');
+
     const allMessages = [...messages.filter(m => m.id !== "1"), userMessage];
     setMessages(prev => [...prev, userMessage]);
     setInput('');
@@ -283,6 +308,8 @@ RESPONSE RULES:
 
     try {
       await streamChat(allMessages);
+      // Play receive sound when response complete
+      playSound('receive');
     } catch (error) {
       console.error("Chat error:", error);
       toast.error(error instanceof Error ? error.message : "Failed to get response");
@@ -313,9 +340,8 @@ RESPONSE RULES:
         </div>
       )}
 
-      {/* Floating Button - Animated Bot Avatar */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={handleToggle}
         className={`fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-gradient-to-br from-primary via-accent to-primary text-primary-foreground shadow-xl hover:shadow-[0_0_40px_hsla(174,72%,56%,0.6)] transition-all duration-300 flex items-center justify-center group ${isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100 animate-bounce-slow'
           }`}
         style={{
@@ -371,7 +397,10 @@ RESPONSE RULES:
                 <Trash2 className="w-4 h-4 text-muted-foreground" />
               </button>
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={() => {
+                  playSound('close');
+                  setIsOpen(false);
+                }}
                 className="p-1.5 rounded-lg hover:bg-secondary/50 transition-colors"
               >
                 <X className="w-4 h-4 text-muted-foreground" />

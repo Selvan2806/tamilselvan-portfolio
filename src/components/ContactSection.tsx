@@ -7,6 +7,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { z } from 'zod';
 import { useAntiSpam } from '@/hooks/use-anti-spam';
 
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
   email: z.string().trim().email("Invalid email address").max(255, "Email must be less than 255 characters"),
@@ -100,16 +102,29 @@ const ContactSection = () => {
     setIsSubmitting(true);
 
     try {
-      const { error } = await supabase
-        .from('contact_submissions')
-        .insert({
+      // Use edge function for rate-limited submission
+      const response = await fetch(`${SUPABASE_URL}/functions/v1/contact-submit`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           name: result.data.name,
           email: result.data.email,
           subject: result.data.subject,
           message: result.data.message,
-        });
+        }),
+      });
 
-      if (error) throw error;
+      const data = await response.json();
+
+      if (!response.ok) {
+        if (response.status === 429) {
+          toast.error('Too many submissions. Please try again later.');
+          return;
+        }
+        throw new Error(data.error || 'Failed to send message');
+      }
 
       toast.success('Message sent successfully! I\'ll get back to you soon.', {
         icon: <CheckCircle className="w-5 h-5" />,
@@ -118,7 +133,7 @@ const ContactSection = () => {
       setFormData({ name: '', email: '', subject: '', message: '' });
       regenerateChallenge(); // Reset challenge after successful submission
     } catch (error) {
-      toast.error('Failed to send message. Please try again.');
+      toast.error(error instanceof Error ? error.message : 'Failed to send message. Please try again.');
     } finally {
       setIsSubmitting(false);
     }

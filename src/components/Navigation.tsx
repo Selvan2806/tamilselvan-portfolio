@@ -72,7 +72,7 @@ const Navigation = () => {
           <ThemeToggle />
 
           <Button variant="hero" size="sm" className="ml-2" asChild>
-            <a href="#contact">{t.nav.hireMe}</a>
+            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">Download Resume</a>
           </Button>
         </div>
 
@@ -110,7 +110,7 @@ const Navigation = () => {
               <LanguageSwitcher />
               <ThemeToggle />
               <Button variant="hero" className="flex-1" asChild>
-                <a href="#contact" onClick={() => setIsMobileMenuOpen(false)}>{t.nav.hireMe}</a>
+                <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" onClick={() => setIsMobileMenuOpen(false)}>Download Resume</a>
               </Button>
             </div>
           </div>

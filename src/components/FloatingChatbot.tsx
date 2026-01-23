@@ -389,9 +389,18 @@ RESPONSE RULES:
     <>
       {/* Welcome Tooltip */}
       {showWelcomeTooltip && !isOpen && (
-        <div className="fixed bottom-24 right-6 z-50 animate-fade-in">
-          <div className="relative bg-primary text-primary-foreground px-4 py-2.5 rounded-xl shadow-lg max-w-[160px]">
+        <div 
+          className="fixed bottom-24 right-6 z-50 animate-fade-in"
+          style={{
+            animation: 'fade-in 0.3s ease-out, tooltip-bounce 2s ease-in-out infinite',
+          }}
+        >
+          <div className="relative bg-primary text-primary-foreground px-4 py-2.5 rounded-xl shadow-lg max-w-[160px] hover:scale-105 transition-transform cursor-pointer"
+            onClick={handleToggle}
+          >
             <p className="text-sm font-medium">👋 Hi! Need help?</p>
+            {/* Subtle glow effect */}
+            <div className="absolute inset-0 rounded-xl bg-primary/20 blur-md -z-10 animate-pulse" />
             {/* Arrow pointing down */}
             <div className="absolute -bottom-2 right-6 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] border-t-primary" />
           </div>

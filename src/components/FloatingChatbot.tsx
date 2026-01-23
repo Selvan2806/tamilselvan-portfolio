@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Send, Bot, User, Sparkles, X, Trash2, Volume2, VolumeX } from 'lucide-react';
+import { Send, Bot, User, Sparkles, X, Trash2, Volume2, VolumeX, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { useAntiSpam } from '@/hooks/use-anti-spam';
@@ -443,6 +443,15 @@ RESPONSE RULES:
               </div>
             </div>
             <div className="flex items-center gap-1">
+              <a
+                href="/resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-1.5 rounded-lg hover:bg-secondary/50 transition-colors"
+                title="Download Resume"
+              >
+                <Download className="w-4 h-4 text-muted-foreground" />
+              </a>
               <button
                 onClick={() => setSoundEnabled(!soundEnabled)}
                 className="p-1.5 rounded-lg hover:bg-secondary/50 transition-colors"

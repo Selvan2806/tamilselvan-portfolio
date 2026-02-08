@@ -1,104 +1,84 @@
 import { useCallback, useRef } from 'react';
 
-const SFX_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/elevenlabs-sfx`;
+type SoundType = 'open' | 'close' | 'send' | 'receive';
 
-// Cache for generated sounds
-const soundCache = new Map<string, string>();
+// Audio context singleton
+let audioContext: AudioContext | null = null;
 
-// Sound prompts for different events
-const SOUND_PROMPTS = {
-  open: "soft digital pop sound, notification chime, friendly UI open sound",
-  close: "gentle digital close sound, soft swoosh down, UI minimize",
-  send: "quick digital send sound, message whoosh, soft ping",
-  receive: "gentle notification ding, soft digital chime, message received tone",
-} as const;
+const getAudioContext = (): AudioContext => {
+  if (!audioContext) {
+    audioContext = new AudioContext();
+  }
+  return audioContext;
+};
 
-type SoundType = keyof typeof SOUND_PROMPTS;
+// Sound configurations for different events
+const SOUND_CONFIG: Record<SoundType, { frequency: number; duration: number; type: OscillatorType; fadeOut?: boolean }> = {
+  open: { frequency: 800, duration: 0.15, type: 'sine', fadeOut: true },
+  close: { frequency: 600, duration: 0.12, type: 'sine', fadeOut: true },
+  send: { frequency: 1000, duration: 0.08, type: 'sine' },
+  receive: { frequency: 880, duration: 0.1, type: 'sine', fadeOut: true },
+};
 
 export const useChatbotSounds = () => {
-  const isLoadingRef = useRef<Record<string, boolean>>({});
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const isPlayingRef = useRef(false);
 
-  const generateSound = useCallback(async (type: SoundType): Promise<string | null> => {
-    const cacheKey = type;
+  const playSound = useCallback(async (type: SoundType) => {
+    // Prevent overlapping sounds
+    if (isPlayingRef.current) return;
     
-    // Return cached sound if available
-    if (soundCache.has(cacheKey)) {
-      return soundCache.get(cacheKey)!;
-    }
-
-    // Prevent duplicate requests
-    if (isLoadingRef.current[cacheKey]) {
-      return null;
-    }
-
-    isLoadingRef.current[cacheKey] = true;
-
     try {
-      const response = await fetch(SFX_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-        },
-        body: JSON.stringify({
-          prompt: SOUND_PROMPTS[type],
-          duration: type === 'open' || type === 'close' ? 0.8 : 0.5,
-        }),
-      });
-
-      if (!response.ok) {
-        console.error(`Failed to generate ${type} sound:`, response.status);
-        return null;
+      const ctx = getAudioContext();
+      
+      // Resume context if suspended (required for user interaction)
+      if (ctx.state === 'suspended') {
+        await ctx.resume();
       }
 
-      const audioBlob = await response.blob();
-      const audioUrl = URL.createObjectURL(audioBlob);
+      isPlayingRef.current = true;
+      const config = SOUND_CONFIG[type];
       
-      // Cache the sound
-      soundCache.set(cacheKey, audioUrl);
+      // Create oscillator
+      const oscillator = ctx.createOscillator();
+      const gainNode = ctx.createGain();
       
-      return audioUrl;
+      oscillator.type = config.type;
+      oscillator.frequency.setValueAtTime(config.frequency, ctx.currentTime);
+      
+      // Set volume
+      gainNode.gain.setValueAtTime(0.15, ctx.currentTime);
+      
+      // Add fade out for smoother sound
+      if (config.fadeOut) {
+        gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + config.duration);
+      }
+      
+      // Connect nodes
+      oscillator.connect(gainNode);
+      gainNode.connect(ctx.destination);
+      
+      // Play sound
+      oscillator.start(ctx.currentTime);
+      oscillator.stop(ctx.currentTime + config.duration);
+      
+      // Cleanup
+      oscillator.onended = () => {
+        isPlayingRef.current = false;
+        oscillator.disconnect();
+        gainNode.disconnect();
+      };
     } catch (error) {
-      console.error(`Error generating ${type} sound:`, error);
-      return null;
-    } finally {
-      isLoadingRef.current[cacheKey] = false;
+      // Silently fail - sound effects are non-critical
+      isPlayingRef.current = false;
+      console.error('Error playing sound:', error);
     }
   }, []);
 
-  const playSound = useCallback(async (type: SoundType) => {
-    try {
-      const audioUrl = await generateSound(type);
-      
-      if (!audioUrl) {
-        return;
-      }
-
-      // Stop any currently playing sound
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-      }
-
-      const audio = new Audio(audioUrl);
-      audio.volume = 0.5;
-      audioRef.current = audio;
-      
-      await audio.play();
-    } catch (error) {
-      // Silently fail - sound effects are non-critical
-      console.error('Error playing sound:', error);
-    }
-  }, [generateSound]);
-
-  // Pre-generate sounds in the background
+  // No preloading needed for Web Audio API
   const preloadSounds = useCallback(() => {
-    Object.keys(SOUND_PROMPTS).forEach((type) => {
-      generateSound(type as SoundType);
-    });
-  }, [generateSound]);
+    // Initialize audio context on user interaction
+    getAudioContext();
+  }, []);
 
   return {
     playSound,

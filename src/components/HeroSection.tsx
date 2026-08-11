@@ -1,7 +1,7 @@
 import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import profilePhoto from '@/assets/profile-photo.jpeg';
+import profilePhotoAsset from '@/assets/profile-photo.jpeg.asset.json';
 import { useLanguage } from '@/hooks/use-language';
 
 const HeroSection = () => {
@@ -23,7 +23,7 @@ const HeroSection = () => {
           >
             <div className="w-64 h-64 sm:w-72 sm:h-72 lg:w-80 lg:h-80 rounded-full overflow-hidden border-4 border-primary/30 shadow-2xl relative z-10">
               <img
-                src={profilePhoto}
+                src={profilePhotoAsset.url}
                 alt="TAMILSELVAN P - Full Stack Developer"
                 className="w-full h-full object-cover"
               />

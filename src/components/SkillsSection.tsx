@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Star } from 'lucide-react';
 
-type SkillCategory = 'all' | 'languages' | 'frontend' | 'backend' | 'tools' | 'ai';
+type SkillCategory = 'all' | 'languages' | 'corejava' | 'backend' | 'frontend' | 'database' | 'web';
 
 interface Skill {
   name: string;
@@ -11,31 +11,44 @@ interface Skill {
 }
 
 const skills: Skill[] = [
-  { name: 'Python', category: ['languages', 'ai', 'backend'], level: 5 },
-  { name: 'JavaScript', category: ['languages', 'frontend'], level: 5 },
-  { name: 'Java', category:['languages', 'backend'], level:3},
-  { name: 'SQL', category: ['languages', 'backend'], level: 4 },
-  { name: 'React', category: ['frontend'], level: 5 },
-  { name: 'Tailwind CSS', category: ['frontend'], level: 5 },
-  { name: 'Node.js', category: ['backend'], level: 4 },
-  { name: 'MongoDB', category: ['backend'], level: 4 },
-  { name: 'LangChain', category: ['ai'], level: 4 },
-  { name: 'Git', category: ['tools'], level: 5 },
-  { name: 'Linux', category: ['tools'], level: 4 },
+  // Programming Languages
+  { name: 'Java', category: ['languages'], level: 4 },
+  { name: 'Python', category: ['languages'], level: 4 },
+  { name: 'SQL', category: ['languages'], level: 4 },
+  // Core Java
+  { name: 'OOP', category: ['corejava'], level: 4 },
+  { name: 'Collections', category: ['corejava'], level: 4 },
+  { name: 'Exception Handling', category: ['corejava'], level: 4 },
+  { name: 'File Handling', category: ['corejava'], level: 4 },
+  // Backend
+  { name: 'Spring Boot', category: ['backend'], level: 4 },
+  { name: 'FastAPI', category: ['backend'], level: 3 },
+  // Frontend
+  { name: 'HTML5', category: ['frontend'], level: 5 },
+  { name: 'CSS3', category: ['frontend'], level: 4 },
+  { name: 'JavaScript', category: ['frontend'], level: 4 },
+  // Database
+  { name: 'MySQL', category: ['database'], level: 4 },
+  { name: 'MongoDB', category: ['database'], level: 4 },
+  // Web Technologies
+  { name: 'RESTful Web Services', category: ['web'], level: 4 },
+  { name: 'JSON', category: ['web'], level: 4 },
+  { name: 'HTTP', category: ['web'], level: 4 },
 ];
 
 const categories = [
   { id: 'all', label: 'All Skills' },
   { id: 'languages', label: 'Languages' },
-  { id: 'frontend', label: 'Frontend' },
+  { id: 'corejava', label: 'Core Java' },
   { id: 'backend', label: 'Backend' },
-  { id: 'ai', label: 'AI/ML' },
-  { id: 'tools', label: 'Tools' },
+  { id: 'frontend', label: 'Frontend' },
+  { id: 'database', label: 'Database' },
+  { id: 'web', label: 'Web Technologies' },
 ];
 
 const StarRating = ({ level, index, isHovered }: { level: number; index: number; isHovered: boolean }) => {
   return (
-    <div className="flex gap-0.5">
+    <div className="flex gap-0.5 shrink-0">
       {[1, 2, 3, 4, 5].map((star) => (
         <motion.div
           key={star}
@@ -156,17 +169,16 @@ const SkillsSection = () => {
             <div>
               <h4 className="font-semibold text-foreground mb-3">Frontend Development</h4>
               <p className="leading-relaxed">
-                I am skilled in creating responsive and interactive web interfaces using HTML, CSS, JavaScript,
-                and React.js. Passionate about clean UI design, performance optimization, and building AI-integrated
-                user experiences.
+                Skilled in building responsive and interactive web interfaces using HTML5, CSS3,
+                and JavaScript. Focused on clean UI design, performance, and great user experiences.
               </p>
             </div>
             <div>
               <h4 className="font-semibold text-foreground mb-3">Backend Development</h4>
               <p className="leading-relaxed">
-                Backend Developer experienced in building secure APIs, managing databases,
-                and integrating AI-powered services using Python and Java.
-                Focused on performance, scalability, and clean architecture.
+                Backend developer experienced in building RESTful web services and secure APIs with
+                Spring Boot and FastAPI, and managing MySQL and MongoDB databases, backed by strong
+                Core Java fundamentals.
               </p>
             </div>
             <div>

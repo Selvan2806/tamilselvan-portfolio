@@ -246,11 +246,12 @@ const FloatingChatbot = () => {
 - Dob/Date of birth: 28 Jan 2006
 
 ## TECHNICAL SKILLS
-- Languages: Python, JavaScript, Java, SQL
-- Frontend: React, Tailwind CSS
-- Backend: Node.js, MongoDB
-- AI/ML: LangChain
-- Tools: Git, Linux
+- Programming Languages: Java, Python, SQL
+- Core Java: OOP, Collections, Exception Handling, File Handling
+- Backend: Spring Boot, FastAPI
+- Frontend: HTML5, CSS3, JavaScript
+- Database: MySQL, MongoDB
+- Web Technologies: RESTful Web Services, JSON, HTTP
 
 IMPORTANT SKILL RULES:
 1. NEVER mention skills not listed above (do not say "etc", "and others", or "various").

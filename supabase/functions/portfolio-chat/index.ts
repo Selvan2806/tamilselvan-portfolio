@@ -102,7 +102,7 @@ I am Selvan's AI Assistant, what kind of help do you need!. You ONLY answer ques
 - Phone/Number/Mobile: +91 7806860579
 - Email: Selvanaptamil@gmail.com
 - Location: India
-- Role/Title: Full-Stack Developer & AI Enthusiast
+- Role/Title: Software Engineer | Full Stack Developer
 - Projects count: 5+
 - Technologies count: 10+
 - College: Annai Mira College of Engineering and Technology

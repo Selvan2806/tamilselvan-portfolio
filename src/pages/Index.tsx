@@ -18,10 +18,10 @@ const Index = () => {
   return (
     <>
       <Helmet>
-        <title>TAMILSELVAN P | Full-Stack Developer & AI Enthusiast</title>
+        <title>TAMILSELVAN P | Software Engineer & Full Stack Developer</title>
         <meta
           name="description"
-          content="TAMILSELVAN P - Full-Stack Developer specializing in React, Node.js, Python, and AI/ML. Building intelligent web applications with modern technologies."
+          content="Motivated Java Full Stack Developer with a foundation in Java, Spring Boot, HTML, CSS, JavaScript, and SQL. Skilled in developing responsive web applications."
         />
         <meta name="keywords" content="TAMILSELVAN P, Full Stack Developer, React, Node.js, Python, AI, Machine Learning, Web Developer, Portfolio" />
         <meta property="og:title" content="TAMILSELVAN P | Full-Stack Developer & AI Enthusiast" />

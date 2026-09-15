@@ -48,7 +48,7 @@ const categories = [
 
 const StarRating = ({ level, index, isHovered }: { level: number; index: number; isHovered: boolean }) => {
   return (
-    <div className="flex gap-0.5">
+    <div className="flex gap-0.5 shrink-0">
       {[1, 2, 3, 4, 5].map((star) => (
         <motion.div
           key={star}
